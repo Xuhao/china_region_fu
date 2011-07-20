@@ -11,12 +11,7 @@ class City < ActiveRecord::Base
 
 	# 查询同一省的其他城市
 	def brothers
-		City.where("province_id = #{province_id}")
-	end
-
-	# 得分前10名的医院
-	def top(size)
-		hospitals.order("grade").limit(size)
+		@brothers ||= City.where("province_id = #{province_id}")
 	end
 	
 end
