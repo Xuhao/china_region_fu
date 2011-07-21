@@ -1,3 +1,4 @@
+# coding = UTF-8
 class District < ActiveRecord::Base
 	belongs_to :city
 	has_many :hospitals, :dependent => :nullify

@@ -1,4 +1,6 @@
+# coding = UTF-8
 class City < ActiveRecord::Base
+  include ChinaRegionFu
 	belongs_to :province
 	has_many :districts, :dependent => :destroy
 	has_many :hospitals, :dependent => :nullify
