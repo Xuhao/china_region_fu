@@ -1,11 +1,26 @@
 module ChinaRegionFu
-  class MigrationGenerator < Rails::Generators::Base
+  class InstallGenerator < Rails::Generators::Base
     include Rails::Generators::Migration
     source_root File.expand_path('../templates', __FILE__)
-    desc "Copy migration to your application."
 
     def copy_migration_file
       migration_template "migration.rb", "db/migrate/create_china_region_tables.rb"
+    end
+    
+    def copy_region_config_file
+      copy_file 'regions.yml', 'config/regions.yml'
+    end
+    
+    def execute_migrate
+      rake("db:migrate")
+    end
+    
+    def import_region_to_data
+      rake('region:import')
+    end
+    
+    def config_route
+      route("get '/region' => 'region#index'")
     end
 
     def self.next_migration_number(dirname)
