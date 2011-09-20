@@ -22,10 +22,10 @@ features.
 
     bundle exec rails g wulin_master:grid_states
    
-   It will generator *db/migrate/<timestamp>_create_grid_states.rb* migrate file to your app,
+   It will generator <b><em>db/migrate/<timestamp>_create_grid_states.rb</em></b> migrate file to your app,
    _grid_states_ table is used for store the grid states for each user.
 
-   Run with <tt>bundle exec rails g</tt> for get generator list.
+   Run with <b><em>bundle exec rails g</em></b> for get generator list.
 
 4. Assume generator a new grid called *grid_test*, run the generator:
     bundle exec rails g wulin_master:screen_and_grid grid_test name:string age:integer
@@ -39,7 +39,7 @@ features.
     create  app/models/grid_test.rb
     route  resources :grid_tests
 
-   <em>name:string age:integer</em> are the columns of the grid, same as the <em>[field:type field:type]</em> 
+   <b><em>name:string age:integer</em></b> are the columns of the grid, same as the <b><em>[field:type field:type]</em></b> 
    option of *scaffold* generator.
    You can configre your gird:
 
