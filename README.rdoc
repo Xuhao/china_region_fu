@@ -21,9 +21,9 @@ about authentication in rails 3.1 please check this video on railscasts:
 
     bundle exec rails g wulin_auth:migration
 
-  It will generator db/migrate/<timestamp>_create_users.rb migrate file to your app
+   It will generator db/migrate/<timestamp>_create_users.rb migrate file to your app
 
-  Run with <em>bundle exec rails g</em> for get generator list.
+   Run with <em>bundle exec rails g</em> for get generator list.
 
 4. Don't forget to run the db:migrate rake command:
 
