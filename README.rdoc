@@ -28,7 +28,7 @@ features.
    Run with <tt>bundle exec rails g</tt> for get generator list.
 
 4. Assume generator a new grid called 'grid_test', run the generator:
-  bundle exec rails g wulin_master:screen_and_grid grid_test name:string age:integer
+    bundle exec rails g wulin_master:screen_and_grid grid_test name:string age:integer
 
    This will create:
    
@@ -43,33 +43,34 @@ features.
    option of 'scaffold' generator.
    You can configre your gird in <tt>app/grids/grid_test_grid.rb</tt>:
 
-  class GridTestGrid < WulinMaster::GridConfig
-   config do
-     title 'Grid test'
+    class GridTestGrid < WulinMaster::GridConfig
+     config do
+       title 'Grid test'
 
-     base_model GridTest
+       base_model GridTest
 
-     path '/grid_tests'    
+       path '/grid_tests'    
 
-     column :name
-     column :age
-   end
-  end
+       column :name
+       column :age
+     end
+    end
    
    Grid is located in one screen, one screen has one or a few grids,you can put any grid to one
    screen with "grid" method, and config the 'title' and the 'path'.
    app/screens/grid_test_screen.rb:
    
-   class GridTestScreen < WulinMaster::Screen
+    class GridTestScreen < WulinMaster::Screen
      title 'Grid test'
 
      path '/grid_tests'
 
      grid GridTestGrid
-   end
+    end
 
 5. Don't forget to run the db:migrate rake command:
-  bundle exec rake db:migrate
+
+    bundle exec rake db:migrate
 
 == Contributing
 
