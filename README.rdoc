@@ -41,8 +41,9 @@ features.
 
    "name:string age:integer" are the columns of the grid, same as the "[field:type field:type]" 
    option of 'scaffold' generator.
-   You can configre your gird in <tt>app/grids/grid_test_grid.rb</tt>:
+   You can configre your gird:in:
 
+    # app/grids/grid_test_grid.rb
     class GridTestGrid < WulinMaster::GridConfig
      config do
        title 'Grid test'
@@ -58,8 +59,8 @@ features.
    
    Grid is located in one screen, one screen has one or a few grids,you can put any grid to one
    screen with "grid" method, and config the 'title' and the 'path'.
-   app/screens/grid_test_screen.rb:
    
+    # app/screens/grid_test_screen.rb
     class GridTestScreen < WulinMaster::Screen
      title 'Grid test'
 
