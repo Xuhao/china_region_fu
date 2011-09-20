@@ -11,15 +11,12 @@ features.
 === User WulinMaster in Rails 3.1
 
 1. Put 'gem wulin_master' to your Gemfile:
-
   gem wulin_master
 
 2. Run bundler command to install the gem:
-
   bundle install --path bundler
 
 3. After you install wulin_master gem, you need run the generator:
-
   bundle exec rails g wulin_master:grid_states
    
    It will generator db/migrate/<timestamp>_create_grid_states.rb migrate file to your app,
@@ -28,15 +25,16 @@ features.
    Run with <tt>bundle exec rails g</tt> for get generator list.
 
 4. Assume generator a new grid called 'grid_test', run the generator:
-
   bundle exec rails g wulin_master:screen_and_grid grid_test name:string age:integer
-   This will create:  
-  create  db/migrate/20110919093453_create_grid_tests.rb
-  create  app/controllers/grid_tests_controller.rb
-  create  app/screens/grid_test_screen.rb
-  create  app/grids/grid_test_grid.rb
-  create  app/models/grid_test.rb
-  route  resources :grid_tests
+
+   This will create:
+   
+    create  db/migrate/20110919093453_create_grid_tests.rb
+    create  app/controllers/grid_tests_controller.rb
+    create  app/screens/grid_test_screen.rb
+    create  app/grids/grid_test_grid.rb
+    create  app/models/grid_test.rb
+    route  resources :grid_tests
 
    "name:string age:integer" are the columns of the grid, same as the "[field:type field:type]" 
    option of 'scaffold' generator.
@@ -55,20 +53,20 @@ features.
    end
   end
    
-   Grid is located in one screen, one screen has one or a few grids,you can put any grid to one 
-   screen with "grid" method, and config the 'title' and the 'path'. 
+   Grid is located in one screen, one screen has one or a few grids,you can put any grid to one
+   screen with "grid" method, and config the 'title' and the 'path'.
    app/screens/grid_test_screen.rb:
    
-  class GridTestScreen < WulinMaster::Screen
-   title 'Grid test'
-   path '/grid_tests'
-   grid GridTestGrid
-  end
+   class GridTestScreen < WulinMaster::Screen
+     title 'Grid test'
+
+     path '/grid_tests'
+
+     grid GridTestGrid
+   end
 
 5. Don't forget to run the db:migrate rake command:
-
   bundle exec rake db:migrate
-
 
 == Contributing
 
@@ -77,3 +75,4 @@ Jimmy, Xuhao and Maxime Guilbot from Ekohe, inc.
 == License
 
 WulinMaster is released under the MIT license.
+
