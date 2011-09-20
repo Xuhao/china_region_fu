@@ -12,20 +12,20 @@ features.
 
 1. Put 'gem wulin_master' to your Gemfile:
 
-   gem wulin_master
+  gem wulin_master
 
 2. Run bundler command to install the gem:
 
-   bundle install --path bundler
+  bundle install --path bundler
 
 3. After you install wulin_master gem, you need run the generator:
 
-   bundle exec rails g wulin_master:grid_states
+  bundle exec rails g wulin_master:grid_states
    
-  It will generator db/migrate/<timestamp>_create_grid_states.rb migrate file to your app,
-  "grid_states" table is used for store the grid states for each user.
+   It will generator db/migrate/<timestamp>_create_grid_states.rb migrate file to your app,
+   "grid_states" table is used for store the grid states for each user.
 
-  Run with <tt>bundle exec rails g</tt> for get generator list.
+   Run with <tt>bundle exec rails g</tt> for get generator list.
 
 4. Assume generator a new grid called 'grid_test', run the generator:
 
@@ -44,18 +44,18 @@ features.
    option of 'scaffold' generator.
    You can configre your gird in <tt>app/grids/grid_test_grid.rb</tt>:
 
-   class GridTestGrid < WulinMaster::GridConfig
-     config do
-       title 'Grid test'
+  class GridTestGrid < WulinMaster::GridConfig
+   config do
+     title 'Grid test'
 
-       base_model GridTest
+     base_model GridTest
 
-       path '/grid_tests'    
+     path '/grid_tests'    
 
-       column :name
-       column :age
-     end
+     column :name
+     column :age
    end
+  end
    
    Grid is located in one screen, one screen has one or a few grids,you can put any grid to one
    screen with "grid" method, and config the 'title' and the 'path'.

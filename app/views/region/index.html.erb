@@ -1,16 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Activ</title>
-  <%= stylesheet_link_tag    "application" %>
-  <%= javascript_include_tag "application" %>
+  <title>行政地区设置</title>
   <%= csrf_meta_tags %>
+  <%= javascript_include_tag "http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js" %>
+  <style type="text/css">
+  html, body, ul, ol, li, h1, h2, h3, h4, h5, h6, form, fieldset, table, td, img,dl, dt,dd {margin:0; padding:0; border:0;}
+  body,td,p,div,li,select,textarea {font:12px/150% arial,simsun; color:#252525; }
+  body{ width: 950px; margin: 0 auto; background-color: #FFF; }
+  ul,dl, dt,dd,ol{ list-style-type:none; }
+  select,input { vertical-align:middle; cursor:pointer; }
+  a{ color:#0000cc;text-decoration: none; }
+  a:hover{ text-decoration: underline;}
+  .clearfix:after { content:"."; display:block; height:0; clear:both; visibility:hidden; }
+  *html .clearfix{ height:1%; }
+  *+html .clearfix{ height:1% }
+  .clearfix{ display:inline-block }
+  .clearfix { display:block; }
+  .clear{ clear:both;height:0px;overflow:Hidden;display:block; }
+  </style>
 </head>
 <body style="width: 1000px; margin: auto;">
+  <%= debug(@province_groups) %>
   <ul>
-    <% @provinces.each do |province| %>
-    <li><%= province.name%></li>
-    <% end %>
+    <% @province_groups.each do |province_group| -%>
+    <% if !province_group[1].empty? -%>
+    <li><%= province_group[0] %>：</li>
+    <% province_group[1].each do |province| -%>
+    <li><%= province.name %></li>
+    <% end -%>
+    <% end -%>
+    <% end -%>
   </ul>
 
 </body>
