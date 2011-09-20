@@ -1,77 +1,35 @@
-== Welcome to WulinMaster
+== WulinAuth
 
-WulinMaster is a grid plugin base on ruby on rails.It provide powerfull generator 
-and other tools to make grids easy to build,it also provides flexible configuration, 
-you can easily configure your grid,a beautiful ui base on jqueryui and other good 
-features.
-       
+Authlogic is a clean, simple, and unobtrusive authentication solution for Rails 3.1.
+It's use authentication feature of Rails 3.1, so it support rails 3.1 only. More details
+about authentication in rails 3.1 please check this video on railscasts:
+{Authentication in Rails 3.1}[http://railscasts.com/episodes/270-authentication-in-rails-3-1]
 
-== Getting Started
 
-=== User WulinMaster in Rails 3.1
 
-1. Put 'gem wulin_master' to your Gemfile:
+== How to Use
 
-    gem wulin_master
+1. Put 'gem wulin_auth' to your Gemfile:
+
+    gem wulin_auth
 
 2. Run bundler command to install the gem:
 
     bundle install --path bundler
-
-3. After you install wulin_master gem, you need run the generator:
-
-    bundle exec rails g wulin_master:grid_states
    
-   It will generator <em>db/migrate/<timestamp>_create_grid_states.rb</em> migrate file to your app,
-   *_grid_states_* table is used for store the grid states for each user.
+3. After you install wulin_auth gem, you need run the generator:
 
-   Run with <em>bundle exec rails g</em> for get generator list.
+    bundle exec rails g wulin_auth:migration
 
-4. Assume generator a new grid called *grid_test*, run the generator:
-    bundle exec rails g wulin_master:screen_and_grid grid_test name:string age:integer
+  It will generator db/migrate/<timestamp>_create_users.rb migrate file to your app
 
-   This will create:
-   
-    create  db/migrate/20110919093453_create_grid_tests.rb
-    create  app/controllers/grid_tests_controller.rb
-    create  app/screens/grid_test_screen.rb
-    create  app/grids/grid_test_grid.rb
-    create  app/models/grid_test.rb
-    route  resources :grid_tests
+  Run with <em>bundle exec rails g</em> for get generator list.
 
-   <em>name:string age:integer</em> are the columns of the grid, same as the <b><em>[field:type field:type]</em></b> 
-   option of *scaffold* generator.
-   You can configre your gird:
-
-    # app/grids/grid_test_grid.rb
-    class GridTestGrid < WulinMaster::GridConfig
-     config do
-       title 'Grid test'
-
-       base_model GridTest
-
-       path '/grid_tests'    
-
-       column :name
-       column :age
-     end
-    end
-   
-   Grid is located in one screen, one screen has one or a few grids,you can put any grid to one
-   screen with *grid* method, and config the *title* and the *path*.
-   
-    # app/screens/grid_test_screen.rb
-    class GridTestScreen < WulinMaster::Screen
-     title 'Grid test'
-
-     path '/grid_tests'
-
-     grid GridTestGrid
-    end
-
-5. Don't forget to run the db:migrate rake command:
+4. Don't forget to run the db:migrate rake command:
 
     bundle exec rake db:migrate
+
+
 
 == Contributing
 
@@ -79,5 +37,4 @@ Jimmy, Xuhao and Maxime Guilbot from Ekohe, inc.
 
 == License
 
-WulinMaster is released under the MIT license.
-
+WulinExcel is released under the MIT license.
