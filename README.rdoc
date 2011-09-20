@@ -11,13 +11,16 @@ features.
 === User WulinMaster in Rails 3.1
 
 1. Put 'gem wulin_master' to your Gemfile:
-  gem wulin_master
+
+    gem wulin_master
 
 2. Run bundler command to install the gem:
-  bundle install --path bundler
+
+    bundle install --path bundler
 
 3. After you install wulin_master gem, you need run the generator:
-  bundle exec rails g wulin_master:grid_states
+
+    bundle exec rails g wulin_master:grid_states
    
    It will generator db/migrate/<timestamp>_create_grid_states.rb migrate file to your app,
    "grid_states" table is used for store the grid states for each user.
