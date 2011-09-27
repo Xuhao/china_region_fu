@@ -1,5 +1,4 @@
 = WulinMaster
-== Welcome to WulinMaster
 
 WulinMaster is a grid plugin base on ruby on rails.It provide powerfull generator 
 and other tools to make grids easy to build,it also provides flexible configuration, 
