@@ -21,8 +21,8 @@ a powerfull region controller system about china.
    It will:
    * Generate <em>db/migrate/<timestamp>create_china_regions.rb</em> migrate file to your app, *_create_china_regions_* table is used for store the regions.
    * Copy regions.yml to config/ directory.
-   * Run "db:migrate".
-   * Run "region:import".
+   * Run "rake db:migrate".
+   * Run "rake region:import".
    * Add "get '/region' => 'region#index'" to routes.rb
 
    Now you have there ActiveRecord modules: <b>Province, City, District</b>,and a page "/region" used to 
@@ -31,7 +31,9 @@ a powerfull region controller system about china.
    Run with <em>bundle exec rails g</em> for get generator list.
 
 4. If you want to customize the region modules, controller or view, you can run the generator:
-    bundle exec rails g china_region_fu:mvc [erb/haml]
+    bundle exec rails g china_region_fu:mvc [template type]
+    
+   <b>Note:</b> the valid [template type] value is <em>erb</em> and <em>haml</em>.
 
    This will create:
    
