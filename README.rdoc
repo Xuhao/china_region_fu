@@ -19,7 +19,7 @@ a powerfull region controller system about china.
     bundle exec rails g china_region_fu:install
    
    It will:
-   * Generate <em>db/migrate/<timestamp>create_china_regions.rb</em> migrate file to your app, *_create_china_regions_* table is used for store the regions.
+   * Generate <em>db/migrate/<timestamp>create_china_regions.rb</em> migrate file to your app, *_china_regions_* table is used for store the regions.
    * Copy regions.yml to config/ directory.
    * Run "rake db:migrate".
    * Run "rake region:import".
