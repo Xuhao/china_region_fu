@@ -4,7 +4,7 @@ module ChinaRegionFu
     source_root File.expand_path('../templates', __FILE__)
 
     def copy_migration_file
-      migration_template "migration.rb", "db/migrate/create_china_region_tables.rb"
+      migration_template "migration.rb", "db/migrate/create_china_regions.rb"
     end
     
     def copy_region_config_file
