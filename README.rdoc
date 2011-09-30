@@ -1,81 +1,54 @@
-= WulinMaster
+= ChinaRegionFu
 
-WulinMaster is a grid plugin base on ruby on rails.It provide powerfull generator 
-and other tools to make grids easy to build,it also provides flexible configuration, 
-you can easily configure your grid,a beautiful ui base on jqueryui and other good 
-features.
+ChinaRegionFu include the region data of china,and region CURD actions.Got ChinaRegionFu it means you got
+a powerfull region controller system about china.
        
 
 == Getting Started
 
-=== User WulinMaster in Rails 3.1
+1. Put 'gem china_region_fu' to your Gemfile:
 
-1. Put 'gem wulin_master' to your Gemfile:
-
-    gem wulin_master
+    gem china_region_fu
 
 2. Run bundler command to install the gem:
 
     bundle install --path bundler
 
-3. After you install wulin_master gem, you need run the generator:
+3. After you install the gem, you need run the generator:
 
-    bundle exec rails g wulin_master:grid_states
+    bundle exec rails g china_region_fu:install
    
-   It will generator <em>db/migrate/<timestamp>_create_grid_states.rb</em> migrate file to your app,
-   *_grid_states_* table is used for store the grid states for each user.
+   It will:
+   * Generate <em>db/migrate/<timestamp>create_china_regions.rb</em> migrate file to your app,
+   *_create_china_regions_* table is used for store the regions.
+   * Copy regions.yml to config/ directory.
+   * Run "db:migrate".
+   * Run "region:import".
+   * Add "get '/region' => 'region#index'" to routes.rb
 
+   Now you have there ActiveRecord modules: <b>Province, City, District</b>,and a page "/region" used to 
+   manage the region info.
+   
    Run with <em>bundle exec rails g</em> for get generator list.
 
-4. Assume generator a new grid called *grid_test*, run the generator:
-    bundle exec rails g wulin_master:screen_and_grid grid_test name:string age:integer
+4. If you want to customize the region modules, controller or view, you can run the generator:
+    bundle exec rails g china_region_fu:mvc [erb/haml]
 
    This will create:
    
-    create  db/migrate/20110919093453_create_grid_tests.rb
-    create  app/controllers/grid_tests_controller.rb
-    create  app/screens/grid_test_screen.rb
-    create  app/grids/grid_test_grid.rb
-    create  app/models/grid_test.rb
-    route  resources :grid_tests
+    create  app/models/province.rb
+    create  app/models/city.rb
+    create  app/models/district.rb
+    create  app/controllers/region_controller.rb
+    create  app/views/region
+    create  app/views/region/index.html.erb
 
-   <em>name:string age:integer</em> are the columns of the grid, same as the <b><em>[field:type field:type]</em></b> 
-   option of *scaffold* generator.
-   You can configre your gird:
+   So you can do what you want to do in this files.
 
-    # app/grids/grid_test_grid.rb
-    class GridTestGrid < WulinMaster::GridConfig
-     config do
-       title 'Grid test'
-
-       base_model GridTest
-
-       path '/grid_tests'    
-
-       column :name
-       column :age
-     end
-    end
-   
-   Grid is located in one screen, one screen has one or a few grids,you can put any grid to one
-   screen with *grid* method, and config the *title* and the *path* method.
-   
-    # app/screens/grid_test_screen.rb
-    class GridTestScreen < WulinMaster::Screen
-     title 'Grid test'
-
-     path '/grid_tests'
-
-     grid GridTestGrid
-    end
-
-5. Don't forget to run the db:migrate rake command:
-
-    bundle exec rake db:migrate
 
 == Contributing
 
-Jimmy, Xuhao and Maxime Guilbot from Ekohe, inc.
+Xuhao {<rubyfans.com>}[http://www.rubyfans.com].
 
 == License
 
