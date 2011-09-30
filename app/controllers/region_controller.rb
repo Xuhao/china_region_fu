@@ -1,4 +1,5 @@
 class RegionController < ApplicationController
+  self.view_paths = [ File.join(File.dirname(__FILE__), '..', 'views') ]
   
   def index
     @provinces, @province_groups = Province.select('id, name, pinyin').all, []
