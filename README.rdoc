@@ -31,7 +31,9 @@ a powerfull region controller system about china.
    Run with <em>bundle exec rails g</em> for get generator list.
 
 4. If you want to customize the region modules, controller or view, you can run the generator:
-    bundle exec rails g china_region_fu:mvc [erb/haml]
+    bundle exec rails g china_region_fu:mvc [template type]
+    
+   <b>Note:</b> the valid [template type] value is <em>erb</em> and <em>haml</em>.
 
    This will create:
    
