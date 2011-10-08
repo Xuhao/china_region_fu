@@ -53,5 +53,5 @@ Xuhao <{rubyfans.com}[http://www.rubyfans.com]>.
 
 == License
 
-WulinMaster is released under the MIT license.
+ChinaRegionFu is released under the MIT license.
 
