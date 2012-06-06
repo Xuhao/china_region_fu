@@ -1,7 +1,6 @@
 = ChinaRegionFu
 
-ChinaRegionFu include the region data of china,and region CURD actions.Got ChinaRegionFu it means you got
-a powerfull region controller system about china.
+ChinaRegionFu provide the region data of china.You will got complete chian region data after use this gem.
        
 
 == Getting Started
@@ -54,7 +53,8 @@ a powerfull region controller system about china.
 
 == Contributing
 
-Xuhao <{rubyfans.com}[http://www.rubyfans.com]>.
+Region data as yaml Located in <b>lib/generators/china_region_fu/install/templates/regions.yml</b>. 
+I hope you can fork the code and do some improvements and corrections on it.
 
 == License
 
