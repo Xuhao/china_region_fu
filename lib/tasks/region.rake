@@ -6,13 +6,15 @@ namespace :region do
   task :import => :environment do
     file_path = File.join(Rails.root, 'config', 'regions.yml')
     regions = File.open(file_path) { |file| YAML.load(file) }
+    cleanup_regins
     load_to_db(regions)
     puts "Regions import done!"
   end
   
-  desc "Test"
-  task :abc do 
-    puts "1111111111111"
+  def cleanup_regins
+    Province.delete_all
+    City.delete_all
+    District.delete_all
   end
 
   def load_to_db(regions)

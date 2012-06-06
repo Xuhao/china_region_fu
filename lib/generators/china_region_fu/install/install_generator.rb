@@ -4,7 +4,7 @@ module ChinaRegionFu
     source_root File.expand_path('../templates', __FILE__)
 
     def copy_migration_file
-      migration_template "migration.rb", "db/migrate/create_china_regions.rb"
+      migration_template "migration.rb", "db/migrate/create_china_region_tables.rb"
     end
     
     def copy_region_config_file
@@ -17,10 +17,6 @@ module ChinaRegionFu
     
     def import_region_to_data
       rake('region:import')
-    end
-    
-    def config_route
-      route("get '/region' => 'region#index'")
     end
 
     def self.next_migration_number(dirname)
