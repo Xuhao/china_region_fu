@@ -1,20 +1,17 @@
 # -*- encoding: utf-8 -*-
-$:.push File.expand_path("../lib", __FILE__)
-require "china_region_fu/version"
+require File.expand_path('../lib/china_region_fu/version', __FILE__)
 
-Gem::Specification.new do |s|
-  s.name        = "china_region_fu"
-  s.version     = ChinaRegionFu::VERSION
-  s.authors     = ["xuhao"]
-  s.email       = ["xuhao@rubyfans.com"]
-  s.homepage    = ""
-  s.summary     = %q{china region}
-  s.description = %q{china region}
+Gem::Specification.new do |gem|
+  gem.authors       = ["Xuhao"]
+  gem.email         = ["xuhao@rubyfans.com"]
+  gem.description   = %q{China region Ruby on rails interface}
+  gem.summary       = %q{China region Ruby on rails interface}
+  gem.homepage      = "http://rubyfans.com"
 
-  s.rubyforge_project = "china_region_fu"
-
-  s.files         = `git ls-files`.split("\n")
-  s.test_files    = `git ls-files -- {test,spec,features}/*`.split("\n")
-  s.executables   = `git ls-files -- bin/*`.split("\n").map{ |f| File.basename(f) }
-  s.require_paths = ["lib"]
+  gem.files         = `git ls-files`.split($\)
+  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
+  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
+  gem.name          = "china_region_fu"
+  gem.require_paths = ["lib"]
+  gem.version       = ChinaRegionFu::VERSION
 end
