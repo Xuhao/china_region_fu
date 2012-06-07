@@ -1,33 +1,34 @@
-= ChinaRegionFu
+# ChinaRegionFu
 
 ChinaRegionFu provide the region data of china.You will got complete chian region data after use this gem.
        
 
-== Getting Started
+## Installation
 
-1. Put 'gem china_region_fu' to your Gemfile:
+Put 'gem china_region_fu' to your Gemfile:
 
     gem china_region_fu
 
-2. Run bundler command to install the gem:
+Run bundler command to install the gem:
 
     bundle install
 
-3. After you install the gem, you need run the generator:
+After you install the gem, you need run the generator:
 
     rails g china_region_fu:install
    
    It will:
-   * Generate <em>db/migrate/<timestamp>create_china_region_tables.rb</em> migrate file to your app, *_china_regions_* table is used for store the regions.
+   * Generate <em>db/migrate/<timestamp>create_china_region_tables.rb</em> migrate file to your app, `provinces`, `cities`, `districts` table is used for store the regions.
    * Copy regions.yml to config/ directory.
    * Run "rake db:migrate".
    * Run "rake region:import".
 
-   Now you have there ActiveRecord modules: <b>Province, City, District</b>.
+   Now you have there ActiveRecord modules: `Province`, `City`, `District`.
    
-   Run with <em>rails g</em> for get generator list.
+   Run with `rails g` for get generator list.
 
-4. If you want to customize the region modules you can run the generator:
+If you want to customize the region modules you can run the generator:
+
     rails g china_region_fu:mvc
 
    This will create:
@@ -38,7 +39,7 @@ ChinaRegionFu provide the region data of china.You will got complete chian regio
 
    So you can do what you want to do in this files.
    
-5. Examples
+## Usage
 
     a = Province.last
     a.name                # => "台湾省"
@@ -48,15 +49,21 @@ ChinaRegionFu provide the region data of china.You will got complete chian regio
     
     c = City.last
     c.name                # => "酒泉市"
+    c.cities.map(&:zip_code) # => ["133000", "137000", "131100", ...]
     c.districts.map(&:name) # => ["敦煌市", "玉门市", "阿克塞哈萨克族自治县", "肃北蒙古族自治县", "安西县", ...]
     c.brothers.map(&:name)  # => ["甘南藏族自治州", "临夏回族自治州", "陇南市", ...]
+    
+  Online example: [医院之家](http://www.yihub.com/ "医院").
 
-== Contributing
+## Contributing
 
-Region data as yaml Located in <b>lib/generators/china_region_fu/install/templates/regions.yml</b>. 
-I hope you can fork the code and do some improvements and corrections on it.
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Added some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
 
-== License
+## License
 
 ChinaRegionFu is released under the MIT license.
 
