@@ -18,10 +18,10 @@ After you install the gem, you need run the generator:
     rails g china_region_fu:install
    
    It will:
-   * Generate <em>db/migrate/<timestamp>create_china_region_tables.rb</em> migrate file to your app, `provinces`, `cities`, `districts` table is used for store the regions.
+   * Generate `db/migrate/<timestamp>create_china_region_tables.rb` migrate file to your app, `provinces`, `cities`, `districts` table is used for store the regions.
    * Copy regions.yml to config/ directory.
-   * Run "rake db:migrate".
-   * Run "rake region:import".
+   * Run `rake db:migrate`.
+   * Run `rake region:import`.
 
    Now you have there ActiveRecord modules: `Province`, `City`, `District`.
    
@@ -49,7 +49,9 @@ If you want to customize the region modules you can run the generator:
     
     c = City.last
     c.name                # => "酒泉市"
-    c.cities.map(&:zip_code) # => ["133000", "137000", "131100", ...]
+    c.zip_code            # => "735000"
+    c.pinyin              # => "jiuquan"
+    c.pinyin_abbr         # => "jq"
     c.districts.map(&:name) # => ["敦煌市", "玉门市", "阿克塞哈萨克族自治县", "肃北蒙古族自治县", "安西县", ...]
     c.brothers.map(&:name)  # => ["甘南藏族自治州", "临夏回族自治州", "陇南市", ...]
     
