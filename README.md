@@ -41,6 +41,8 @@ If you want to customize the region modules you can run the generator:
    
 ## Usage
 
+#### Model
+
     a = Province.last
     a.name                # => "台湾省"
     a.cities.map(&:name)  # => ["嘉义市", "台南市", "新竹市", "台中市", "基隆市", "台北市"]
@@ -54,6 +56,25 @@ If you want to customize the region modules you can run the generator:
     c.pinyin_abbr         # => "jq"
     c.districts.map(&:name) # => ["敦煌市", "玉门市", "阿克塞哈萨克族自治县", "肃北蒙古族自治县", "安西县", ...]
     c.brothers.map(&:name)  # => ["甘南藏族自治州", "临夏回族自治州", "陇南市", ...]
+    
+#### View
+
+    <%= form_for(@post) do |f| %>
+      <div class="field">
+        <%= f.label :province, '选择地区：' %><br />
+        
+        # FormBuilder
+        # <%= f.region_select [:province, :city, :district] %>
+        # <%= f.region_select [:province, :city] %>
+        # <%= f.region_select [:city, :district] %>
+        # <%= f.region_select [:province, :district] %>
+        
+        # FromHelper
+        # <%= region_select :post, [:province, :city, :district] %>
+        # ...
+        
+      </div>
+    <% end %>
     
   Online example: [医院之家](http://www.yihub.com/ "医院").
 
