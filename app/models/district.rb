@@ -3,7 +3,7 @@ class District < ActiveRecord::Base
   attr_accessible :name, :city_id, :pinyin, :pinyin_abbr
   
 	belongs_to :city
-	has_many :hospitals, :dependent => :nullify
+	belongs_to :province
 
 	def short_name
 		@short_name ||= name.gsub(/区|县|市|自治县/,'')
