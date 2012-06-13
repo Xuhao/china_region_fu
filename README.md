@@ -64,12 +64,14 @@ If you want to customize the region modules you can run the generator:
         <%= f.label :province, '选择地区：' %><br />
         
         # FormBuilder
+        # <%= f.region_select :city %>
         # <%= f.region_select [:province, :city, :district] %>
         # <%= f.region_select [:province, :city] %>
         # <%= f.region_select [:city, :district] %>
         # <%= f.region_select [:province, :district] %>
         
-        # FromHelper
+        # FormHelper
+        # <%= region_select :post, :province %>
         # <%= region_select :post, [:province, :city, :district] %>
         # ...
         
