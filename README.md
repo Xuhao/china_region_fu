@@ -7,7 +7,7 @@ ChinaRegionFu provide the region data of china.You will got complete chian regio
 
 Put 'gem china_region_fu' to your Gemfile:
 
-    gem china_region_fu
+    gem 'china_region_fu'
 
 Run bundler command to install the gem:
 
