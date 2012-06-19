@@ -77,6 +77,16 @@ If you want to customize the region modules you can run the generator:
         
       </div>
     <% end %>
+
+##### prompt
+  
+You need define `province_select_prompt`, `city_select_prompt`, `district_select_prompt` helpers for each select prompt.
+If you have not define these helpers, it will use the default one like:
+    
+    def region_prompt(region_klass)
+      human_name = region_klass.model_name.human
+      "请选择#{human_name}"
+    end
     
   Online example: [医院之家](http://www.yihub.com/ "医院").
 
