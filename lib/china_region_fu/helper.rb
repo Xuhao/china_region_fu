@@ -4,22 +4,17 @@ module ChinaRegionFu
     
     module FormHelper
       def region_select(object, methods, options = {}, html_options = {})
-        html_options[:class] ? (html_options[:class].prepend('region_select ')) : (html_options[:class] = 'region_select')
-        
         output = ''
+        
+        html_options[:class] ? (html_options[:class].prepend('region_select ')) : (html_options[:class] = 'region_select')
         if Array === methods
           methods.each_with_index do |method, index|
             if klass = method.to_s.classify.safe_constantize
               choices = index == 0 ? klass.all.collect {|p| [ p.name, p.id ] } : []
               next_method = methods.at(index + 1)
-              options[:prompt] = region_prompt(klass)
-              html_options[:data] ? (html_options[:data][:region_klass] = "#{method.to_s}") : (html_options[:data] = { region_klass: "#{method.to_s}" })
-              if next_method
-                html_options[:data].merge!(region_target: "#{object}_#{next_method.to_s}_id", region_target_kalss: next_method.to_s)
-              else
-                html_options[:data].delete(:region_target)
-                html_options[:data].delete(:region_target_kalss)
-              end
+              
+              set_options(method, options, klass)
+              set_html_options(object, method, html_options, next_method)
               
               output << select(object, "#{method.to_s}_id", choices, options = options, html_options = html_options)
             else
@@ -34,13 +29,44 @@ module ChinaRegionFu
             raise "Method '#{method}' is not a vaild attribute of #{object}"
           end
         end
-        output << javascript_tag(%~
+        
+        output << javascript_tag(js_output)
+        output.html_safe
+      end
+    
+    
+      private
+      
+      def set_options(method, options, region_klass)
+        if respond_to?("#{method}_select_prompt")
+          options[:prompt] = __send__("#{method}_select_prompt")
+        else
+          options[:prompt] = region_prompt(region_klass)
+        end
+      end
+      
+      def set_html_options(object, method, html_options, next_region)
+        html_options[:data] ? (html_options[:data][:region_klass] = "#{method.to_s}") : (html_options[:data] = { region_klass: "#{method.to_s}" })
+        if next_region
+          html_options[:data].merge!(region_target: "#{object}_#{next_region.to_s}_id", region_target_kalss: next_region.to_s)
+        else
+          html_options[:data].delete(:region_target)
+          html_options[:data].delete(:region_target_kalss)
+        end
+      end
+        
+      def region_prompt(region_klass)
+        human_name = region_klass.model_name.human
+        "请选择#{human_name}"
+      end
+      
+      def js_output
+        %~
           $(function(){
             $('body').on('change', '.region_select', function(event) {
-              var self, target, targetDom;
+              var self, targetDom;
               self = $(event.currentTarget);
-              target = self.data('region-target');
-              targetDom = $('#' + target);
+              targetDom = $('#' + self.data('region-target'));
               if (targetDom.size() > 0) {
                 $.getJSON('/china_region_fu/fetch_options', {klass: self.data('region-target-kalss'), parent_klass: self.data('region-klass'), parent_id: self.val()}, function(data) {
                   $('option[value!=""]', targetDom).remove();
@@ -50,17 +76,8 @@ module ChinaRegionFu
                 })
               }
             });
-          })
-        ~)
-        output.html_safe
-      end
-    
-    
-      private
-        
-      def region_prompt(klass)
-        human_name = klass.model_name.human
-        "请选择#{human_name}"
+          });
+        ~
       end
   
     end
@@ -71,6 +88,7 @@ module ChinaRegionFu
         @template.region_select(@object_name, methods, options = options, html_options = html_options)
       end
     end
+    
   end
 end
 
