@@ -14,4 +14,6 @@ Gem::Specification.new do |gem|
   gem.name          = "china_region_fu"
   gem.require_paths = ["lib"]
   gem.version       = ChinaRegionFu::VERSION
+  
+  gem.add_dependency 'jquery-rails'
 end
