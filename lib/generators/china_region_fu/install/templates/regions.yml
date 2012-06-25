@@ -7478,6 +7478,12 @@
         中沙群岛的岛礁及其海域:
           pinyin: zhongshaqundaodedaojiaojiqihaiyu
           pinyin_abbr: zsqdddjjqhy
+    三沙市:
+      pinyin: sansha
+      pinyin_abbr: ss
+      zip_code: '000000'
+      level: 4
+      districts: {}
 重庆市:
   pinyin: chongqing
   pinyin_abbr: cq
