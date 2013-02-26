@@ -1,5 +1,5 @@
 module ChinaRegionFu
-  class MvcGenerator < Rails::Generators::NamedBase
+  class MvcGenerator < Rails::Generators::Base
     source_root File.expand_path('../../../../../app', __FILE__)
 
     def copy_model_file
