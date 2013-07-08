@@ -10,7 +10,7 @@ namespace :region do
     load_to_db(regions)
     puts "Regions import done!"
   end
-  
+
   def cleanup_regins
     Province.delete_all
     City.delete_all

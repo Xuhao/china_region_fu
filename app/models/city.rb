@@ -1,4 +1,4 @@
-# -*- encoding: utf-8 -*-
+# coding: utf-8
 class City < ActiveRecord::Base
   attr_accessible :name, :province_id, :level, :zip_code, :pinyin, :pinyin_abbr
   

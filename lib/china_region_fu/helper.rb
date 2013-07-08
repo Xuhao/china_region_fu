@@ -1,4 +1,6 @@
-# -*- encoding: utf-8 -*-
+require 'action_view'
+
+# coding: utf-8
 module ChinaRegionFu
   module Helper
     
