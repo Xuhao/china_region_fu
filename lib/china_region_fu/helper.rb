@@ -1,6 +1,5 @@
-require 'action_view'
-
 # coding: utf-8
+require 'action_view'
 module ChinaRegionFu
   module Helper
     
