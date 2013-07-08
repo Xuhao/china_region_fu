@@ -1,5 +1,7 @@
 # ChinaRegionFu
 
+[![Gem Version](https://badge.fury.io/rb/china_region_fu.png)](http://badge.fury.io/rb/china_region_fu)
+
 ChinaRegionFu provide the region data of china.You will got complete chian region data after use this gem.
 
 ## Installation
