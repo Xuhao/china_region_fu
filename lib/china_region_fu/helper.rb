@@ -74,7 +74,7 @@ module ChinaRegionFu
                   $.each(data, function(index, value) {
                     targetDom.append("<option value='" + value.id + "'>" + value.name + "</option>");
                   });
-                })
+                });
               }
             });
           });
