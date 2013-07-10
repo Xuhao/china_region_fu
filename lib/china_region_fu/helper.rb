@@ -11,7 +11,7 @@ module ChinaRegionFu
         if Array === methods
           methods.each_with_index do |method, index|
             if klass = method.to_s.classify.safe_constantize
-              choices = index == 0 ? klass.all.collect {|p| [ p.name, p.id ] } : []
+              choices = index == 0 ? klass.select('id, name').collect {|p| [ p.name, p.id ] } : []
               next_method = methods.at(index + 1)
               
               set_options(method, options, klass)
@@ -25,7 +25,7 @@ module ChinaRegionFu
         else
           if klass = methods.to_s.classify.safe_constantize
             options[:prompt] = region_prompt(klass)
-            output << select(object, methods, klass.all.collect {|p| [ p.name, p.id ] }, options = options, html_options = html_options)
+            output << select(object, methods, klass.select('id, name').collect {|p| [ p.name, p.id ] }, options = options, html_options = html_options)
           else
             raise "Method '#{method}' is not a vaild attribute of #{object}"
           end

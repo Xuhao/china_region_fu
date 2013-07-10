@@ -2,14 +2,9 @@ module ChinaRegionFu
   class FetchOptionsController < ::ActionController::Metal
 
     def index
-      if params_valid? and parent_object = params[:parent_klass].classify.safe_constantize.find(params[:parent_id])
-        table_name = params[:klass].tableize
-        regions = parent_object.__send__(table_name).select("#{table_name}.id, #{table_name}.name")
-        if has_level_column?
-          regions = regions.order('level ASC')
-        else
-          regions = regions.order('name ASC')
-        end
+      if params_valid? and klass
+        regions = klass.where(params[:parent_klass].foreign_key => params[:parent_id]).select('id, name').order('name ASC')
+        regions.reorder('level ASC') if has_level_column?
         self.response_body = regions.to_json
       else
         self.response_body = [].to_json
@@ -19,7 +14,11 @@ module ChinaRegionFu
     private
 
       def has_level_column?
-        params[:klass].classify.safe_constantize.try(:column_names).to_a.include?('level')
+        klass.column_names.to_a.include?('level')
+      end
+
+      def klass
+        params[:klass].classify.safe_constantize
       end
 
       def params_valid?
