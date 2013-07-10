@@ -2,10 +2,10 @@ module ChinaRegionFu
   class FetchOptionsController < ::ActionController::Metal
 
     def index
-      if params_valid?(params) and parent_klass = params[:parent_klass].classify.safe_constantize.find(params[:parent_id])
+      if params_valid? and parent_object = params[:parent_klass].classify.safe_constantize.find(params[:parent_id])
         table_name = params[:klass].tableize
-        regions = parent_klass.__send__(table_name).select("#{table_name}.id, #{table_name}.name")
-        if has_level_column?(params[:klass])
+        regions = parent_object.__send__(table_name).select("#{table_name}.id, #{table_name}.name")
+        if has_level_column?
           regions = regions.order('level ASC')
         else
           regions = regions.order('name ASC')
@@ -18,11 +18,11 @@ module ChinaRegionFu
 
     private
 
-      def has_level_column?(klass_name)
-        klass_name.classify.safe_constantize.try(:column_names).to_a.include?('level')
+      def has_level_column?
+        params[:klass].classify.safe_constantize.try(:column_names).to_a.include?('level')
       end
 
-      def params_valid?(params)
+      def params_valid?
         params[:klass].present? and params[:parent_klass] =~ /^province|city$/i and params[:parent_id].present?
       end
 
