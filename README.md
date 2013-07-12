@@ -53,10 +53,10 @@ a.cities.map(&:name)  # => ["嘉义市", "台南市", "新竹市", "台中市", 
 Province.first.districts.map(&:name) # => ["延庆县", "密云县", "平谷区", ...]
 
 c = City.last
-c.name                # => "酒泉市"
-c.zip_code            # => "735000"
-c.pinyin              # => "jiuquan"
-c.pinyin_abbr         # => "jq"
+c.name                  # => "酒泉市"
+c.zip_code              # => "735000"
+c.pinyin                # => "jiuquan"
+c.pinyin_abbr           # => "jq"
 c.districts.map(&:name) # => ["敦煌市", "玉门市", "阿克塞哈萨克族自治县", "肃北蒙古族自治县", "安西县", ...]
 c.brothers.map(&:name)  # => ["甘南藏族自治州", "临夏回族自治州", "陇南市", ...]
 ```
@@ -70,8 +70,8 @@ c.brothers.map(&:name)  # => ["甘南藏族自治州", "临夏回族自治州", 
 
     # FormBuilder
     # <%= f.region_select :city %>
-    # <%= f.region_select [:province, :city, :district] %>
-    # <%= f.region_select [:province, :city] %>
+    # <%= f.region_select [:province, :city, :district], province_prompt: 'Do', city_prompt: 'it', district_prompt: 'like this' %>
+    # <%= f.region_select [:province, :city], include_blank: true %>
     # <%= f.region_select [:city, :district] %>
     # <%= f.region_select [:province, :district] %>
 
@@ -82,18 +82,6 @@ c.brothers.map(&:name)  # => ["甘南藏族自治州", "临夏回族自治州", 
 
   </div>
 <% end %>
-```
-
-##### prompt
-
-You need define `province_select_prompt`, `city_select_prompt`, `district_select_prompt` helpers for each select prompt.
-If you have not define these helpers, it will use the default one like:
-
-```ruby
-def region_prompt(region_klass)
-  human_name = region_klass.model_name.human
-  "请选择#{human_name}"
-end
 ```
 
   Online example: [医院之家](http://www.yihub.com/ "医院").
