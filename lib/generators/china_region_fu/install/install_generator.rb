@@ -6,15 +6,16 @@ module ChinaRegionFu
     def copy_migration_file
       migration_template "migration.rb", "db/migrate/create_china_region_tables.rb"
     end
-    
-    def copy_region_config_file
-      copy_file 'regions.yml', 'config/regions.yml'
+
+    desc "Download https://github.com/Xuhao/china_region_data/raw/master/regions.yml to config/regions.yml."
+    def download_region_config_file
+      get 'https://github.com/Xuhao/china_region_data/raw/master/regions.yml', 'config/regions.yml'
     end
-    
+
     def execute_migrate
       rake("db:migrate")
     end
-    
+
     def import_region_to_data
       rake('region:import')
     end

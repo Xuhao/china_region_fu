@@ -20,14 +20,14 @@ After you install the gem, you need run the generator:
     rails g china_region_fu:install
 
    It will:
-   * Generate `db/migrate/<timestamp>create_china_region_tables.rb` migrate file to your app, `provinces`, `cities`, `districts` table is used for store the regions.
-   * Copy regions.yml to config/ directory.
+   * Generate `db/migrate/<timestamp>create_china_region_tables.rb` migrate file to your app.
+   * Download [https://github.com/Xuhao/china_region_data/raw/master/regions.yml](https://github.com/Xuhao/china_region_data/raw/master/regions.yml) to config/regions.yml.
    * Run `rake db:migrate`.
    * Run `rake region:import`.
 
    Now you have there ActiveRecord modules: `Province`, `City`, `District`.
 
-   Run with `rails g` for get generator list.
+Region data if from [ChinaRegionData](https://github.com/Xuhao/china_region_data), check it out to see what kind of data you have now.
 
 If you want to customize the region modules you can run the generator:
 
@@ -69,15 +69,15 @@ c.brothers.map(&:name)  # => ["甘南藏族自治州", "临夏回族自治州", 
     <%= f.label :province, '选择地区：' %><br />
 
     # FormBuilder
-    # <%= f.region_select :city %>
-    # <%= f.region_select [:province, :city, :district], province_prompt: 'Do', city_prompt: 'it', district_prompt: 'like this' %>
-    # <%= f.region_select [:province, :city], include_blank: true %>
-    # <%= f.region_select [:city, :district] %>
-    # <%= f.region_select [:province, :district] %>
+    <%= f.region_select :city %>
+    <%= f.region_select [:province, :city, :district], province_prompt: 'Do', city_prompt: 'it', district_prompt: 'like this' %>
+    <%= f.region_select [:province, :city], include_blank: true %>
+    <%= f.region_select [:city, :district] %>
+    <%= f.region_select [:province, :district] %>
 
     # FormHelper
-    # <%= region_select :post, :province %>
-    # <%= region_select :post, [:province, :city, :district] %>
+    <%= region_select :post, :province %>
+    <%= region_select :post, [:province, :city, :district] %>
     # ...
 
   </div>
