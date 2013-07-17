@@ -22,7 +22,7 @@ module ChinaRegionFu
       end
 
       def params_valid?
-        params[:klass].present? and params[:parent_klass] =~ /^province|city$/i and params[:parent_id].present?
+        params[:klass].present? and params[:parent_klass] =~ /\Aprovince\Z|\Acity\Z/i and params[:parent_id].present?
       end
 
   end
