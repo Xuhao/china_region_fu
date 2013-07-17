@@ -27,7 +27,7 @@ module ChinaRegionFu
           output << javascript_tag(js_output) if methods.size > 1
         else
           if klass = methods.to_s.classify.safe_constantize
-            output << select(object, methods, klass.select('id, name').collect {|p| [ p.name, p.id ] }, options = options, html_options = html_options)
+            output << content_tag(:div, select(object, methods, klass.select('id, name').collect {|p| [ p.name, p.id ] }, options = options, html_options = html_options), class: "input region #{methods.to_s}")
           else
             raise InvalidAttributeError, "Method '#{method}' is not a vaild attribute of #{object}"
           end
@@ -48,7 +48,7 @@ module ChinaRegionFu
         end
 
         def js_output
-          %~
+          <<-JAVASCRIPT
             $(function(){
               $('body').on('change', '.region_select', function(event) {
                 var self, targetDom;
@@ -56,15 +56,17 @@ module ChinaRegionFu
                 targetDom = $('#' + self.data('region-target'));
                 if (targetDom.size() > 0) {
                   $.getJSON('/china_region_fu/fetch_options', {klass: self.data('region-target-kalss'), parent_klass: self.data('region-klass'), parent_id: self.val()}, function(data) {
+                    var options = [];
                     $('option[value!=""]', targetDom).remove();
                     $.each(data, function(index, value) {
-                      targetDom.append("<option value='" + value.id + "'>" + value.name + "</option>");
+                      options.push("<option value='" + value.id + "'>" + value.name + "</option>");
                     });
+                    targetDom.append(options.join(''));
                   });
                 }
               });
             });
-          ~
+          JAVASCRIPT
         end
 
     end
