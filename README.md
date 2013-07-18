@@ -63,6 +63,8 @@ c.brothers.map(&:name)  # => ["甘南藏族自治州", "临夏回族自治州", 
 
 #### View
 
+##### Form helpers
+
 ```erb
 <%= form_for(@post) do |f| %>
   <div class="field">
@@ -78,10 +80,33 @@ c.brothers.map(&:name)  # => ["甘南藏族自治州", "临夏回族自治州", 
     # FormHelper
     <%= region_select :post, :province %>
     <%= region_select :post, [:province, :city, :district] %>
-    # ...
+    ...
 
+    # FormTagHelper
+    <%= region_select_tag :province, class: 'my', include_blank: true %>
+    <%= region_select_tag [:province, :city, :district], province_prompt: 'Do', city_prompt: 'it', district_prompt: 'like this', class: 'my' %>
+    ...
   </div>
 <% end %>
+```
+
+##### SimpleForm
+
+```erb
+<%= f.input :province, as: :region, collection: Province.select('id, name'), sub_region: :city %>
+<%= f.input :city, as: :region, sub_region: :district %>
+<%= f.input :district, as: :region %>
+<%= js_for_region_ajax %>
+```
+
+##### Fetch sub region by Ajax
+
+Once select one province, we want fill the city select box by cities of the selected province. Implement this, what you need to do is
+
+add below helper in your page:
+
+```erb
+<%= js_for_region_ajax %>
 ```
 
   Online example: [医院之家](http://www.yihub.com/ "医院").
