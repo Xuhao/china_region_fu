@@ -1,6 +1,4 @@
-require 'china_region_fu/exceptions'
 require 'china_region_fu/helpers/utilities'
-require 'action_view/helpers/javascript_helper'
 
 class RegionInput < SimpleForm::Inputs::CollectionInput
   include ChinaRegionFu::Utilities
