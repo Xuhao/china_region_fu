@@ -99,7 +99,7 @@ c.brothers.map(&:name)  # => ["甘南藏族自治州", "临夏回族自治州", 
 <%= js_for_region_ajax %>
 ```
 
-##### Fetch sub region by Ajax
+##### Fetch sub regions by Ajax
 
 Once select one province, we want fill the city select box by cities of the selected province. Implement this, what you need to do is
 
