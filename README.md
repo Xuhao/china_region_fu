@@ -3,7 +3,7 @@
 [![Gem Version](https://badge.fury.io/rb/china_region_fu.png)](http://badge.fury.io/rb/china_region_fu)
 [![Build Status](https://travis-ci.org/Xuhao/china_region_fu.png?branch=master)](https://travis-ci.org/Xuhao/china_region_fu)
 
-ChinaRegionFu provide the region data of china.You will got complete chian region data after use this gem.
+ChinaRegionFu provide the region data of china.You will got complete China region data after use this gem.
 
 ## Installation
 
@@ -47,19 +47,27 @@ If you want to customize the region modules you can run the generator:
 
 ```ruby
 a = Province.last
-a.name                # => "台湾省"
-a.cities.pluck(:name)  # => ["嘉义市", "台南市", "新竹市", "台中市", "基隆市", "台北市"]
+a.name                   # => "台湾省"
+a.cities.pluck(:name)    # => ["嘉义市", "台南市", "新竹市", "台中市", "基隆市", "台北市"]
 
 Province.first.districts.pluck(:name) # => ["延庆县", "密云县", "平谷区", ...]
 
 c = City.last
-c.name                  # => "酒泉市"
-c.short_name            # => "酒泉"
-c.zip_code              # => "735000"
-c.pinyin                # => "jiuquan"
-c.pinyin_abbr           # => "jq"
+c.name                   # => "酒泉市"
+c.short_name             # => "酒泉"
+c.zip_code               # => "735000"
+c.pinyin                 # => "jiuquan"
+c.pinyin_abbr            # => "jq"
 c.districts.pluck(:name) # => ["敦煌市", "玉门市", "阿克塞哈萨克族自治县", "肃北蒙古族自治县", "安西县", ...]
 c.brothers.pluck(:name)  # => ["甘南藏族自治州", "临夏回族自治州", "陇南市", ...]
+
+d = District.last
+d.name                   # => "吉木乃县"
+d.short_name             # => "吉木乃"
+d.pinyin                 # => "jimunai"
+d.pinyin_abbr            # => "jmn"
+d.city.name              # => "阿勒泰地区"
+d.province.name          # => "新疆维吾尔自治区"
 ```
 
 #### View
