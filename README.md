@@ -48,17 +48,18 @@ If you want to customize the region modules you can run the generator:
 ```ruby
 a = Province.last
 a.name                # => "台湾省"
-a.cities.map(&:name)  # => ["嘉义市", "台南市", "新竹市", "台中市", "基隆市", "台北市"]
+a.cities.pluck(:name)  # => ["嘉义市", "台南市", "新竹市", "台中市", "基隆市", "台北市"]
 
-Province.first.districts.map(&:name) # => ["延庆县", "密云县", "平谷区", ...]
+Province.first.districts.pluck(:name) # => ["延庆县", "密云县", "平谷区", ...]
 
 c = City.last
 c.name                  # => "酒泉市"
+c.short_name            # => "酒泉"
 c.zip_code              # => "735000"
 c.pinyin                # => "jiuquan"
 c.pinyin_abbr           # => "jq"
-c.districts.map(&:name) # => ["敦煌市", "玉门市", "阿克塞哈萨克族自治县", "肃北蒙古族自治县", "安西县", ...]
-c.brothers.map(&:name)  # => ["甘南藏族自治州", "临夏回族自治州", "陇南市", ...]
+c.districts.pluck(:name) # => ["敦煌市", "玉门市", "阿克塞哈萨克族自治县", "肃北蒙古族自治县", "安西县", ...]
+c.brothers.pluck(:name)  # => ["甘南藏族自治州", "临夏回族自治州", "陇南市", ...]
 ```
 
 #### View
@@ -101,15 +102,40 @@ c.brothers.map(&:name)  # => ["甘南藏族自治州", "临夏回族自治州", 
 
 ##### Fetch sub regions by Ajax
 
-Once select one province, we want fill the city select box by cities of the selected province. Implement this, what you need to do is
-
-add below helper in your page:
+Once select one province, we want fetch cities of the selected province and fill the city select box automatically. If you use `:region_select_tag` and FormBuilder/FormHelper method aka `:region_select`, you need do nothing for this. If you use simple_form or normal form helper like `:select_tag` or `:select`, to implement this, what you need to do is add below helper in your form:
 
 ```erb
 <%= js_for_region_ajax %>
 ```
 
-  Online example: [医院之家](http://www.yihub.com/ "医院").
+it will render:
+
+```javascript
+<script type="text/javascript">
+  //<![CDATA[
+    $(function(){
+      $('body').on('change', '.region_select', function(event) {
+        var self, targetDom;
+        self = $(event.currentTarget);
+        targetDom = $('#' + self.data('region-target'));
+        if (targetDom.size() > 0) {
+          $.getJSON('/china_region_fu/fetch_options', {klass: self.data('region-target-kalss'), parent_klass: self.data('region-klass'), parent_id: self.val()}, function(data) {
+            var options = [];
+            $('option[value!=""]', targetDom).remove();
+            $.each(data, function(index, value) {
+              options.push("<option value='" + value.id + "'>" + value.name + "</option>");
+            });
+            targetDom.append(options.join(''));
+          });
+        }
+      });
+    });
+  //]]>
+</script>
+```
+
+## Online example
+[医院之家](http://www.yihub.com/ "医院").
 
 ## Contributing
 
