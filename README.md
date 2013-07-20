@@ -123,17 +123,17 @@ it will render:
   //<![CDATA[
     $(function(){
       $('body').on('change', '.region_select', function(event) {
-        var self, targetDom;
+        var self, $targetDom;
         self = $(event.currentTarget);
-        targetDom = $('#' + self.data('region-target'));
-        if (targetDom.size() > 0) {
+        $targetDom = $('#' + self.data('region-target'));
+        if ($targetDom.size() > 0) {
           $.getJSON('/china_region_fu/fetch_options', {klass: self.data('region-target-kalss'), parent_klass: self.data('region-klass'), parent_id: self.val()}, function(data) {
             var options = [];
-            $('option[value!=""]', targetDom).remove();
+            $('option[value!=""]', $targetDom).remove();
             $.each(data, function(index, value) {
               options.push("<option value='" + value.id + "'>" + value.name + "</option>");
             });
-            targetDom.append(options.join(''));
+            $targetDom.append(options.join(''));
           });
         }
       });
