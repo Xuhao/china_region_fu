@@ -28,8 +28,8 @@ module ChinaRegionFu
     end
 
     def set_html_options(object, method, html_options, next_region)
-      region_klass_name = method.to_s.sub(/_id\Z/, '')
-      next_region_klass_name = next_region.to_s.sub(/_id\Z/, '')
+      region_klass_name = method.to_s#.sub(/_id\Z/, '')
+      next_region_klass_name = next_region.to_s#.sub(/_id\Z/, '')
       html_options[:data] ? (html_options[:data][:region_klass] = region_klass_name) : (html_options[:data] = { region_klass: region_klass_name })
       if next_region
         region_target = object ? "#{object}_#{next_region.to_s}" : next_region.to_s
@@ -48,6 +48,7 @@ module ChinaRegionFu
 
     def append_region_class(options)
       options[:class] ? (options[:class].prepend('region_select ')) : (options[:class] = 'region_select')
+      options
     end
   end
 end

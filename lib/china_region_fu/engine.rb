@@ -12,6 +12,7 @@ module ChinaRegionFu
 
     initializer "simple extension" do
       require "china_region_fu/helpers/simple_form" if Object.const_defined?("SimpleForm")
+      require "china_region_fu/helpers/formtastic" if Object.const_defined?("Formtastic")
     end
   end
 end
