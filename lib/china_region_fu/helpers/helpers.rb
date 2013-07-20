@@ -40,7 +40,7 @@ module ChinaRegionFu
       if Array === methods
         output = ActiveSupport::SafeBuffer.new
         methods.each_with_index do |method, index|
-          if klass = method.to_s.classify.safe_constantize
+          if klass = to_class(method)
             choices = index == 0 ? klass.select('id, name').collect {|p| [ p.name, p.id ] } : []
             next_method = methods.at(index + 1)
             set_html_options(object, method, html_options, next_method)
@@ -53,7 +53,7 @@ module ChinaRegionFu
         output << js_for_region_ajax if methods.size > 1
         output
       else
-        if klass = methods.to_s.classify.safe_constantize
+        if klass = to_class(methods)
           content_tag(:div, select(object, methods, klass.select('id, name').collect {|p| [ p.name, p.id ] }, options = options, html_options = html_options), class: "input region #{methods.to_s}")
         else
           raise InvalidAttributeError

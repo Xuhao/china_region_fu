@@ -118,7 +118,7 @@ Once select one province, we want fetch cities of the selected province and fill
 
 it will render:
 
-```javascript
+```html
 <script type="text/javascript">
   //<![CDATA[
     $(function(){
