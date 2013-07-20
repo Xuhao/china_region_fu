@@ -102,10 +102,23 @@ d.province.name          # => "新疆维吾尔自治区"
 ##### SimpleForm
 
 ```erb
-<%= f.input :province, as: :region, collection: Province.select('id, name'), sub_region: :city %>
-<%= f.input :city, as: :region, sub_region: :district %>
-<%= f.input :district, as: :region %>
-<%= js_for_region_ajax %>
+<%= simple_form_for(@post) do |f| %>
+  <%= f.input :province, as: :region, collection: Province.select('id, name'), sub_region: :city %>
+  <%= f.input :city, as: :region, sub_region: :district %>
+  <%= f.input :district, as: :region %>
+  <%= js_for_region_ajax %>
+<% end %>
+```
+
+##### Formtastic
+
+```erb
+<%= semantic_form_for(@post) do |f| %>
+  <%= f.input :province, as: :region, collection: Province.select('id, name'), sub_region: :city %>
+  <%= f.input :city, as: :region, sub_region: :district %>
+  <%= f.input :district, as: :region %>
+  <%= js_for_region_ajax %>
+<% end %>
 ```
 
 ##### Fetch sub regions by Ajax
