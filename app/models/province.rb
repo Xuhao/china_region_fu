@@ -1,6 +1,8 @@
 class Province < ActiveRecord::Base
-  attr_accessible :name, :pinyin, :pinyin_abbr
+  if Rails.version < '4.0'
+    attr_accessible :name, :pinyin, :pinyin_abbr
+  end
 
-   has_many :cities, dependent: :destroy
-   has_many :districts, through: :cities
+  has_many :cities, dependent: :destroy
+  has_many :districts, through: :cities
 end

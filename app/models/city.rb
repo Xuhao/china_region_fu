@@ -1,7 +1,9 @@
 # coding: utf-8
 class City < ActiveRecord::Base
-  attr_accessible :name, :province_id, :level, :zip_code, :pinyin, :pinyin_abbr
-  
+  if Rails.version < '4.0'
+    attr_accessible :name, :province_id, :level, :zip_code, :pinyin, :pinyin_abbr
+  end
+
   belongs_to :province
   has_many :districts, dependent: :destroy
 

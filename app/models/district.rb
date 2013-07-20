@@ -1,6 +1,8 @@
 # coding: utf-8
 class District < ActiveRecord::Base
-  attr_accessible :name, :city_id, :pinyin, :pinyin_abbr
+  if Rails.version < '4.0'
+    attr_accessible :name, :city_id, :pinyin, :pinyin_abbr
+  end
 
   belongs_to :city
   has_one :province, through: :city
