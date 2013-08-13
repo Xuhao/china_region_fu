@@ -1,9 +1,26 @@
-require 'yaml'
+require 'httparty'
 
 namespace :region do
 
+  desc 'Download regions.yml from https://raw.github.com/Xuhao/china_region_data/master/regions.yml'
+  task :download do
+    begin
+      remote_url = 'https://raw.github.com/Xuhao/china_region_data/master/regions.yml'
+      puts 'Downloading ...'
+      File.open(Rails.root.join('config', 'regions.yml'), 'wb') { |f| f.write(HTTParty.get(remote_url).body)}
+      puts "Done! File located at: \e[32mconfig/regions.yml\e[0m"
+    rescue
+      puts "\e[31mWarnning!!!\e[0m"
+      puts "Download \e[33mregions.yml\e[0m failed!"
+      puts ''
+      puts "You need download \e[33mregions.yml\e[0m by hand from:"
+      puts "\e[32mhttps://github.com/Xuhao/china_region_data/raw/master/regions.yml\e[0m"
+    end
+  end
+
   desc "Import region data to database from config/regions.yml"
   task :import => :environment do
+    puts 'Importing ...'
     file_path = File.join(Rails.root, 'config', 'regions.yml')
     regions = File.open(file_path) { |file| YAML.load(file) }
     cleanup_regins

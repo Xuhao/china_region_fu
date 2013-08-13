@@ -15,26 +15,36 @@ Run bundler command to install the gem:
 
     bundle install
 
-After you install the gem, you need run the generator:
+After you install the gem, you need run below tasks one by one:
+
+1. Copy migration file to your app.
+
+    rake china_region_fu_engine:install:migrations
+
+2. Run db:migrate to create region tables.
+
+    rake db:migrate
+
+3. Download the latest regions.yml form [github](https://raw.github.com/Xuhao/china_region_data/master/regions.yml).
+
+    rake region:download
+
+4. Import regions to database.
+
+    rake region:import
+
+You also can use below generator to do the same things:
 
     rails g china_region_fu:install
 
-   It will:
-   * Generate `db/migrate/<timestamp>create_china_region_tables.rb` migrate file to your app.
-   * Download [https://github.com/Xuhao/china_region_data/raw/master/regions.yml](https://github.com/Xuhao/china_region_data/raw/master/regions.yml) to config/regions.yml.
-   * Run `rake db:migrate`.
-   * Run `rake region:import`.
-
-   Now you have there ActiveRecord modules: `Province`, `City`, `District`.
-
-Region data if from [ChinaRegionData](https://github.com/Xuhao/china_region_data), check it out to see what kind of data you have now.
+Region data is from [ChinaRegionData](https://github.com/Xuhao/china_region_data), check it out to see what kind of data you have now.
 
 If you want to customize the region modules you can run the generator:
 
     rails g china_region_fu:models
 
    This will create:
-   
+
     create  app/models/province.rb
     create  app/models/city.rb
     create  app/models/district.rb
