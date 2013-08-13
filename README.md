@@ -17,21 +17,21 @@ Run bundler command to install the gem:
 
 After you install the gem, you need run below tasks one by one:
 
-1. Copy migration file to your app.
+  1. Copy migration file to your app.
 
-    rake china_region_fu_engine:install:migrations
+      <pre>rake china_region_fu_engine:install:migrations</pre>
 
-2. Run db:migrate to create region tables.
+  2. Run db:migrate to create region tables.
 
-    rake db:migrate
+      <pre>rake db:migrate</pre>
 
-3. Download the latest regions.yml form [github](https://raw.github.com/Xuhao/china_region_data/master/regions.yml).
+  3. Download the latest regions.yml form [github](https://raw.github.com/Xuhao/china_region_data/master/regions.yml).
 
-    rake region:download
+      <pre>rake region:download</pre>
 
-4. Import regions to database.
+  4. Import regions to database.
 
-    rake region:import
+      <pre>rake region:import</pre>
 
 You also can use below generator to do the same things:
 
