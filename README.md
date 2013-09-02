@@ -33,9 +33,9 @@ After you install the gem, you need run below tasks one by one:
 
       <pre>rake region:import</pre>
 
-You also can use below generator to do the same things:
+You also can use below task to do the same things as four tasks above:
 
-    rails g china_region_fu:install
+    rake region:install
 
 Region data is from [ChinaRegionData](https://github.com/Xuhao/china_region_data), check it out to see what kind of data you have now.
 

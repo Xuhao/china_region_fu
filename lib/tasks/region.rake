@@ -2,6 +2,14 @@ require 'httparty'
 
 namespace :region do
 
+  desc 'Install china region fu'
+  task :install do
+    Rake::Task['china_region_fu_engine:install:migrations'].invoke
+    Rake::Task['db:migrate'].invoke
+    Rake::Task['region:download'].invoke
+    Rake::Task['region:import'].invoke
+  end
+
   desc 'Download regions.yml from https://raw.github.com/Xuhao/china_region_data/master/regions.yml'
   task :download do
     begin
@@ -21,7 +29,7 @@ namespace :region do
   desc "Import region data to database from config/regions.yml"
   task :import => :environment do
     puts 'Importing ...'
-    file_path = File.join(Rails.root, 'config', 'regions.yml')
+    file_path = Rails.root.join('config', 'regions.yml')
     regions = File.open(file_path) { |file| YAML.load(file) }
     cleanup_regins
     load_to_db(regions)
