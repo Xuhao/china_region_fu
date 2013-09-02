@@ -1,8 +1,0 @@
-Description:
-    Explain the generator
-
-Example:
-    rails generate china_region:fu:migration Thing
-
-    This will create:
-        db/migrate/create_china_region_tables.rb
