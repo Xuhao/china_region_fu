@@ -28,6 +28,7 @@ module ChinaRegionFu
     end
 
     def set_html_options(object, method, html_options, next_region)
+      object_id = object.gsub(/\[/, '_').gsub(/\]/, '')
       region_klass_name = method.to_s#.sub(/_id\Z/, '')
       next_region_klass_name = next_region.to_s#.sub(/_id\Z/, '')
       html_options[:data] ? (html_options[:data][:region_klass] = region_klass_name) : (html_options[:data] = { region_klass: region_klass_name })
