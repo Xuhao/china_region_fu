@@ -33,7 +33,7 @@ module ChinaRegionFu
       next_region_klass_name = next_region.to_s#.sub(/_id\Z/, '')
       html_options[:data] ? (html_options[:data][:region_klass] = region_klass_name) : (html_options[:data] = { region_klass: region_klass_name })
       if next_region
-        region_target = object ? "#{object}_#{next_region.to_s}" : next_region.to_s
+        region_target = object ? "#{object_id}_#{next_region.to_s}" : next_region.to_s
         html_options[:data].merge!(region_target: region_target, region_target_kalss: next_region_klass_name)
       else
         html_options[:data].delete(:region_target)
