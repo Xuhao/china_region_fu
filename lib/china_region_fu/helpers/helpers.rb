@@ -64,7 +64,7 @@ module ChinaRegionFu
 
   module FormBuilder
     def region_select(methods, options = {}, html_options = {})
-      @template.region_select(@object_name, methods, options = options, html_options = html_options)
+      @template.region_select(@object_name, methods, objectify_options(options), @default_options.merge(html_options))
     end
   end
 end
