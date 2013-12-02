@@ -3,12 +3,7 @@ require 'httparty'
 namespace :region do
 
   desc 'Install china region fu'
-  task :install do
-    Rake::Task['china_region_fu_engine:install:migrations'].invoke
-    Rake::Task['db:migrate'].invoke
-    Rake::Task['region:download'].invoke
-    Rake::Task['region:import'].invoke
-  end
+  task :install => ['china_region_fu_engine:install:migrations', 'db:migrate', 'region:download', 'region:import']
 
   desc 'Download regions.yml from https://raw.github.com/Xuhao/china_region_data/master/regions.yml'
   task :download do
