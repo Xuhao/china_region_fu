@@ -1,4 +1,4 @@
-# [中文说明](https://github.com/Xuhao/china_region_fu/blob/master/README.md)
+# [中文说明](https://github.com/Xuhao/china_region_fu/blob/master/README.zh-cn.md)
 
 # ChinaRegionFu
 
