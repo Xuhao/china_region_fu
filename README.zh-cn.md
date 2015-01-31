@@ -1,59 +1,62 @@
-# [中文说明](https://github.com/Xuhao/china_region_fu/blob/master/README.zh-cn.md)
-
 # ChinaRegionFu
 
 [![Gem Version](https://badge.fury.io/rb/china_region_fu.png)](http://badge.fury.io/rb/china_region_fu)
 [![Build Status](https://travis-ci.org/Xuhao/china_region_fu.png?branch=master)](https://travis-ci.org/Xuhao/china_region_fu)
 
-ChinaRegionFu provide the region data of china.You will got complete China region data after use this gem.
+ChinaRegionFu 是一个为Rails应用提供的中国行政区域信息的rubygem。使用ChinaRegionFu后，你将拥有全面且准确的中国区域数据，而且你还可以使用其提供的表单helper，轻松将具有联动效果的区域选择器放入你的表单中。
 
-## Installation
+## 安装
 
-Put 'gem china_region_fu' to your Gemfile:
+将 'gem china_region_fu' 放入项目的 Gemfile中:
 
     gem 'china_region_fu'
 
-Run bundler command to install the gem:
+运行 bundler 命令来安装:
 
     bundle install
 
-After you install the gem, you need run below tasks one by one:
+bundle安装完成后，你需要依次运行以下命令:
 
-  1. Copy migration file to your app.
+  1. 复制数据迁移文件到项目中:
 
       <pre>rake china_region_fu_engine:install:migrations</pre>
 
-  2. Run db:migrate to create region tables.
+  2. 运行 db:migrate 来创建数据库表:
 
       <pre>rake db:migrate</pre>
 
-  3. Download the latest regions.yml form [github](https://raw.github.com/Xuhao/china_region_data/master/regions.yml).
+  3. 从[china_region_data](https://raw.github.com/Xuhao/china_region_data)下载最新的<b>[regions.yml](https://raw.github.com/Xuhao/china_region_data/master/regions.yml)</b>:
 
       <pre>rake region:download</pre>
 
-  4. Import regions to database.
+  4. 将区域信息导入到数据库:
 
       <pre>rake region:import</pre>
 
-You also can use below task to do the same things as four tasks above:
+以上每条命令运行完成后，你可以根据需要对生成的文件做一些修改，然后再运行下一条。如果你不需要做自定义修改，也可以通过下面这条命令实现和上面4个命令同样的动作:
 
     rake region:install
 
-Region data is from [ChinaRegionData](https://github.com/Xuhao/china_region_data), check it out to see what kind of data you have now.
+区域数据来自[ChinaRegionData](https://github.com/Xuhao/china_region_data), 你可以通过查看这个git库来了解都有哪些区域数据。
 
-If you want to customize the region modules you can run the generator:
+ChinaRegionFu通过`ActiveRecord`将各种区域映射成类:
+ * Province: 省、自治区、直辖市、特别行政区
+ * City: 地区、盟、自治州、地级市
+ * District: 县、自治县、旗、自治旗、县级市、市辖区、林区、特区
+
+如果你想自定义这些类，可以通过以下命令将其复制到你的项目中:
 
     rails g china_region_fu:models
 
-   This will create:
+   将会创建:
 
     create  app/models/province.rb
     create  app/models/city.rb
     create  app/models/district.rb
 
-   So you can do what you want to do in this files.
+   你可以在以上这些类文件中做任何事。
 
-## Usage
+## 使用说明
 
 #### Model
 
@@ -133,15 +136,15 @@ d.province.name          # => "新疆维吾尔自治区"
 <% end %>
 ```
 
-##### Fetch sub regions by Ajax
+##### 通过Ajax实现联动效果
 
-Once select one province, we want fetch cities of the selected province and fill the city select box automatically. If you use `:region_select_tag` and FormBuilder/FormHelper method aka `:region_select`, you need do nothing for this. If you use simple_form or normal form helper like `:select_tag` or `:select`, to implement this, what you need to do is add below helper in your form:
+当选中某个省份时，我们希望城市下拉列表自动显示这个省下属的城市；当选择某个城市时，我们希望区域列表显示该城市下属区域。如果你使用`:region_select_tag`和`:region_select`这个两个helper构造表单，你不需要左任何额外工作就能获得联动效果。如果你用simple_form, formtastic或使用rails内置的下拉列表helper例如`:select_tag` 和 `:select`, 你需要使用下面这个helper来实现联动效果:
 
 ```erb
 <%= js_for_region_ajax %>
 ```
 
-it will render:
+将会渲染:
 
 ```html
 <script type="text/javascript">
@@ -167,7 +170,7 @@ it will render:
 </script>
 ```
 
-## Online example
+## 在线的例子
 [医院之家](http://www.yihub.com/ "医院").
 
 ## Contributing
