@@ -41,8 +41,14 @@ module ChinaRegionFu
         output = ActiveSupport::SafeBuffer.new
         methods.each_with_index do |method, index|
           if klass = to_class(method)
-            choices = index == 0 ? klass.select('id, name').collect {|p| [ p.name, p.id ] } : []
             next_method = methods.at(index + 1)
+            if index == 0
+              choices = klass.select('id, name').collect {|p| [ p.name, p.id ] }
+            else
+              pre_method = methods.at(index -1) 
+              father_id = options[:object].send(pre_method)
+              choices = klass.select('id, name').where("#{pre_method} = #{father_id}").collect { |p| [ p.name, p.id ] } 
+            end
             set_html_options(object, method, html_options, next_method)
 
             output << content_tag(:div, select(object, method.to_s, choices, options.merge(prompt: options.delete("#{method}_prompt".to_sym)), html_options = html_options), class: "input region #{method.to_s}")
