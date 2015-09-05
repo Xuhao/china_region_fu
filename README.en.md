@@ -87,25 +87,25 @@ d.province.name          # => "新疆维吾尔自治区"
 ##### Form helpers
 
 ```erb
-<%= form_for(@post) do |f| %>
+<%= form_for(@address) do |f| %>
   <div class="field">
     <%= f.label :province, '选择地区：' %><br />
 
     # FormBuilder
     <%= f.region_select :city %>
-    <%= f.region_select [:province, :city, :district], province_prompt: 'Do', city_prompt: 'it', district_prompt: 'like this' %>
-    <%= f.region_select [:province, :city], include_blank: true %>
-    <%= f.region_select [:city, :district] %>
-    <%= f.region_select [:province, :district] %>
+    <%= f.region_select [:province_id, :city_id, :district_id], province_prompt: 'Do', city_prompt: 'it', district_prompt: 'like this' %>
+    <%= f.region_select [:province_id, :city_id], include_blank: true %>
+    <%= f.region_select [:city_id, :district_id] %>
+    <%= f.region_select [:province_id, :district_id] %>
 
     # FormHelper
-    <%= region_select :post, :province %>
-    <%= region_select :post, [:province, :city, :district] %>
+    <%= region_select :address, :province_id %>
+    <%= region_select :address, [:province_id, :city_id, :district_id] %>
     ...
 
     # FormTagHelper
-    <%= region_select_tag :province, class: 'my', include_blank: true %>
-    <%= region_select_tag [:province, :city, :district], province_prompt: 'Do', city_prompt: 'it', district_prompt: 'like this', class: 'my' %>
+    <%= region_select_tag :province_id, class: 'province-select', include_blank: true %>
+    <%= region_select_tag [:province_id, :city_id, :district_id], province_prompt: 'Do', city_prompt: 'it', district_prompt: 'like this', class: 'region-select' %>
     ...
   </div>
 <% end %>
@@ -114,10 +114,10 @@ d.province.name          # => "新疆维吾尔自治区"
 ##### SimpleForm
 
 ```erb
-<%= simple_form_for(@post) do |f| %>
-  <%= f.input :province, as: :region, collection: Province.select('id, name'), sub_region: :city %>
-  <%= f.input :city, as: :region, sub_region: :district %>
-  <%= f.input :district, as: :region %>
+<%= simple_form_for(@address) do |f| %>
+  <%= f.input :province_id, as: :region, collection: Province.select('id, name'), sub_region: :city_id %>
+  <%= f.input :city_id, as: :region, sub_region: :district_id %>
+  <%= f.input :district_id, as: :region %>
   <%= js_for_region_ajax %>
 <% end %>
 ```
@@ -125,10 +125,10 @@ d.province.name          # => "新疆维吾尔自治区"
 ##### Formtastic
 
 ```erb
-<%= semantic_form_for(@post) do |f| %>
-  <%= f.input :province, as: :region, collection: Province.select('id, name'), sub_region: :city %>
-  <%= f.input :city, as: :region, sub_region: :district %>
-  <%= f.input :district, as: :region %>
+<%= semantic_form_for(@address) do |f| %>
+  <%= f.input :province_id, as: :region, collection: Province.select('id, name'), sub_region: :city_id) %>
+  <%= f.input :city_id), as: :region, sub_region: :district_id %>
+  <%= f.input :district_id, as: :region %>
   <%= js_for_region_ajax %>
 <% end %>
 ```
@@ -147,7 +147,7 @@ it will render:
 <script type="text/javascript">
   //<![CDATA[
     $(function(){
-      $('body').on('change', '.region_select', function(event) {
+      $('body').off('change', '.region_select').on('change', '.region_select', function(event) {
         var self, $targetDom;
         self = $(event.currentTarget);
         $targetDom = $('#' + self.data('region-target'));
@@ -172,13 +172,9 @@ it will render:
 
 ## Contributing
 
-1. Fork it
-2. Create your feature branch (`git checkout -b my-new-feature`)
-3. Commit your changes (`git commit -am 'Added some feature'`)
-4. Push to the branch (`git push origin my-new-feature`)
-5. Create new Pull Request
+Bug reports and pull requests are welcome on GitHub at https://github.com/xuhao/sample. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
 
 ## License
 
-ChinaRegionFu is released under the MIT license.
+The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
 
