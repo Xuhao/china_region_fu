@@ -1,0 +1,22 @@
+machine:
+  timezone: Asia/Shanghai
+
+  ruby:
+    version: 2.2.3
+
+  environment:
+    RAILS_ENV: test
+
+dependencies:
+  pre:
+    - rvm install 1.9.3-p551
+    - rvm install 2.2.3
+    - 'rvm-exec 1.9.3-p551 bundle config build.nokogiri --use-system-libraries'
+    - 'rvm-exec 2.2.3 bundle config build.nokogiri --use-system-libraries'
+    - 'rvm-exec 1.9.3-p551 bundle install'
+    - 'rvm-exec 2.2.3 bundle install'
+
+test:
+  override:
+    - 'rvm-exec 1.9.3-p551 bundle exec rake'
+    - 'rvm-exec 2.2.3 bundle exec rake'
