@@ -17,7 +17,17 @@ module ChinaRegionFu
                       options.push("<option value='" + value.id + "'>" + value.name + "</option>");
                     });
                     $targetDom.append(options.join(''));
+                    if ($targetDom.data('value')) {
+                      $targetDom.val($targetDom.data('value'));
+                      $targetDom.removeData('value');
+                      $targetDom.change();
+                    }
                   });
+                }
+              });
+              $('.region_select').each(function () {
+                if ($(this).val()) {
+                  $(this).change();
                 }
               });
             });
