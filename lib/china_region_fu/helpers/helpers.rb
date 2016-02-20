@@ -16,7 +16,7 @@ module ChinaRegionFu
             next_name = names.at(index + 1)
             set_html_options(nil, name, options, next_name)
 
-            output << content_tag(:div, select_tag(name, choices, options.merge(prompt: options.delete("#{method}_prompt".to_sym), "data-value": options[:object][method.to_s])), class: "input region #{name.to_s}")
+            output << content_tag(:div, select_tag(name, choices, options.merge(prompt: options.delete("#{name}_prompt".to_sym), "data-value": options[name] || options[name.to_s])), class: "input region #{name.to_s}")
           else
             raise InvalidAttributeError
           end
