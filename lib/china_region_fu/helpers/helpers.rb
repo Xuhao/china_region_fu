@@ -16,7 +16,7 @@ module ChinaRegionFu
             next_name = names.at(index + 1)
             set_html_options(nil, name, options, next_name)
 
-            output << content_tag(:div, select_tag(name, choices, options.merge(prompt: options.delete("#{name}_prompt".to_sym))), class: "input region #{name.to_s}")
+            output << content_tag(:div, select_tag(name, choices, options.merge(prompt: options.delete("#{method}_prompt".to_sym), "data-value": options[:object][method.to_s])), class: "input region #{name.to_s}")
           else
             raise InvalidAttributeError
           end
@@ -45,7 +45,7 @@ module ChinaRegionFu
             next_method = methods.at(index + 1)
             set_html_options(object, method, html_options, next_method)
 
-            output << content_tag(:div, select(object, method.to_s, choices, options.merge(prompt: options.delete("#{method}_prompt".to_sym)), html_options = html_options), class: "input region #{method.to_s}")
+            output << content_tag(:div, select(object, method.to_s, choices, options.merge(prompt: options.delete("#{method}_prompt".to_sym)), html_options.merge("data-value": options[:object][method.to_s])), class: "input region #{method.to_s}")
           else
             raise InvalidAttributeError
           end
@@ -54,7 +54,7 @@ module ChinaRegionFu
         output
       else
         if klass = to_class(methods)
-          content_tag(:div, select(object, methods, klass.select('id, name').collect {|p| [ p.name, p.id ] }, options = options, html_options = html_options), class: "input region #{methods.to_s}")
+          content_tag(:div, select(object, methods, klass.select('id, name').collect {|p| [ p.name, p.id ] }, options, html_options), class: "input region #{methods.to_s}")
         else
           raise InvalidAttributeError
         end
