@@ -1,4 +1,5 @@
-require "china_region_fu/version"
-require 'china_region_fu/engine' if defined? Rails
+require 'china_region_fu/version'
+require 'china_region_fu/engine'
 
-module ChinaRegionFu;end
+module ChinaRegionFu
+end

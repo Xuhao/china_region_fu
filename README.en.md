@@ -7,6 +7,12 @@
 
 ChinaRegionFu provide the region data of china.You will got complete China region data after use this gem.
 
+## Requirements
+
+  * CRuby 2.2 or greater
+  * Rails 4.0 or greater
+  * jQuery 1.8 or greater, ignore if don't need reactive effect
+
 ## Installation
 
 Put 'gem china_region_fu' to your Gemfile:
@@ -21,7 +27,7 @@ After you install the gem, you need run below tasks one by one:
 
   1. Copy migration file to your app.
 
-      <pre>rake china_region_fu_engine:install:migrations</pre>
+      <pre>rake china_region_fu:install:migrations</pre>
 
   2. Run db:migrate to create region tables.
 
@@ -29,11 +35,11 @@ After you install the gem, you need run below tasks one by one:
 
   3. Download the latest regions.yml form [github](https://raw.github.com/Xuhao/china_region_data/master/regions.yml).
 
-      <pre>rake region:download</pre>
+      <pre>rake china_region_fu:download</pre>
 
   4. Import regions to database.
 
-      <pre>rake region:import</pre>
+      <pre>rake china_region_fu:import</pre>
 
 You also can use below task to do the same things as four tasks above:
 
@@ -118,7 +124,7 @@ d.province.name          # => "新疆维吾尔自治区"
   <%= f.input :province_id, as: :region, collection: Province.select('id, name'), sub_region: :city_id %>
   <%= f.input :city_id, as: :region, sub_region: :district_id %>
   <%= f.input :district_id, as: :region %>
-  <%= js_for_region_ajax %>
+  <%= china_region_fu_js %>
 <% end %>
 ```
 
@@ -127,18 +133,20 @@ d.province.name          # => "新疆维吾尔自治区"
 ```erb
 <%= semantic_form_for(@address) do |f| %>
   <%= f.input :province_id, as: :region, collection: Province.select('id, name'), sub_region: :city_id) %>
-  <%= f.input :city_id), as: :region, sub_region: :district_id %>
+  <%= f.input :city_id, as: :region, sub_region: :district_id %>
   <%= f.input :district_id, as: :region %>
-  <%= js_for_region_ajax %>
+  <%= china_region_fu_js %>
 <% end %>
 ```
 
 ##### Fetch sub regions by Ajax
 
-Once select one province, we want fetch cities of the selected province and fill the city select box automatically. If you use `:region_select_tag` and FormBuilder/FormHelper method aka `:region_select`, you need do nothing for this. If you use simple_form or normal form helper like `:select_tag` or `:select`, to implement this, what you need to do is add below helper in your form:
+Once select one province, we want fetch cities of the selected province and fill the city select box automatically. to implement this, what you need to do is add below helper in your form:
 
 ```erb
-<%= js_for_region_ajax %>
+<%= china_region_fu_js %>
+# or
+<%= content_for :china_region_fu_js %>
 ```
 
 it will render:
@@ -146,19 +154,33 @@ it will render:
 ```html
 <script type="text/javascript">
   //<![CDATA[
+    window.chinaRegionFu = window.chinaRegionFu || {};
     $(function(){
-      $('body').off('change', '.region_select').on('change', '.region_select', function(event) {
-        var self, $targetDom;
-        self = $(event.currentTarget);
-        $targetDom = $('#' + self.data('region-target'));
-        if ($targetDom.size() > 0) {
-          $.getJSON('/china_region_fu/fetch_options', {klass: self.data('region-target-kalss'), parent_klass: self.data('region-klass'), parent_id: self.val()}, function(data) {
-            var options = [];
-            $('option[value!=""]', $targetDom).remove();
-            $.each(data, function(index, value) {
-              options.push("<option value='" + value.id + "'>" + value.name + "</option>");
-            });
-            $targetDom.append(options.join(''));
+      $('body').off('change', '.china-region-select').on('change', '.china-region-select', function(event) {
+        var $self, $targetDom;
+        $self = $(event.currentTarget);
+        $subRegionDom = $('[data-region-name="' + $self.data('sub-region') + '"]');
+        if ($subRegionDom.size() > 0) {
+          $.getJSON('/china_region_fu/fetch_options', {
+              columns: window.chinaRegionFu.fetchColumns || 'id,name',
+              sub_name: $self.data('sub-region'),
+              parent_name: $self.data('region-name'),
+              parent_id: $self.val()
+            }, function(json) {
+              if (window.chinaRegionFu.ajaxDone) {
+                window.chinaRegionFu.ajaxDone(json);
+              } else {
+                var options = [];
+                $self.parent().nextAll().find('.china-region-select > option[value!=""]').remove()
+                $.each(json.data, function(_, value) {
+                  options.push("<option value='" + value.id + "'>" + value.name + "</option>");
+                });
+                $subRegionDom.append(options.join(''));
+              }
+          }).fail(function(xhr, textStatus, error) {
+            window.chinaRegionFu.ajaxFail && window.chinaRegionFu.ajaxFail(jqxhr, textStatus, error);
+          }).always(function(event, xhr, settings) {
+            window.chinaRegionFu.ajaxAlways && window.chinaRegionFu.ajaxAlways(event, xhr, settings);
           });
         }
       });

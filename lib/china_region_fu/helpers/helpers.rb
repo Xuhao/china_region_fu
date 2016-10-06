@@ -1,70 +1,58 @@
-require 'china_region_fu/exceptions'
-require 'china_region_fu/helpers/utilities'
+require 'china_region_fu/errors'
+require 'china_region_fu/helpers/utilis'
 
 module ChinaRegionFu
   module Helpers
-    include Utilities
+    module FormHelper
+      include Utilis
 
-    def region_select_tag(names, options = {})
-      append_region_class(options)
+      def region_select_tag(regions, options = {})
+        render_region_select_tags(nil, regions, ActiveSupport::SafeBuffer.new, options)
+      end
 
-      if Array === names
-        output = ActiveSupport::SafeBuffer.new
-        names.each_with_index do |name, index|
-          if klass = to_class(name)
-            choices = index == 0 ? options_from_collection_for_select(klass.select('id, name'), "id", "name") : ''
-            next_name = names.at(index + 1)
-            set_html_options(nil, name, options, next_name)
+      def region_select(object, methods, options = {}, html_options = {})
+        render_region_select_tags(object, methods, ActiveSupport::SafeBuffer.new, options, html_options)
+      end
 
-            output << content_tag(:div, select_tag(name, choices, options.merge(prompt: options.delete("#{name}_prompt".to_sym))), class: "input region #{name.to_s}")
+      private
+
+        def render_region_select_tags(object, regions, buffer = ActiveSupport::SafeBuffer.new, options = {}, html_options = {})
+          regions = regions.to_a
+          regions.each_with_index do |region, index|
+            if klass = region.to_s.sub(/_id\Z/, '').classify.safe_constantize
+              buffer << content_tag(:div, make_select(object, klass, region, regions.at(index + 1), index, options, html_options), class: "input region #{region}")
+            else
+              raise ChinaRegionFu::InvalidFieldError, "Invalid region field: `#{region}`, valid fields are: province, province_id, city, city_id, district and district_id."
+            end
+          end
+          content_for(:china_region_fu_js) { china_region_fu_js }
+          buffer
+        end
+
+        def make_select(object, klass, region, sub_region, order_index, options = {}, html_options = {})
+          choices = order_index == 0 ? klass.pluck(:name, :id) : get_choices(object, klass, region, options[:object])
+          if object
+            select(object, region, choices, append_prompt(region, options), append_html_options(region, sub_region, html_options))
           else
-            raise InvalidAttributeError
+            select_tag(region, options_for_select(choices), append_html_options(region, sub_region, append_prompt(region, options)))
           end
         end
-        output << js_for_region_ajax if names.size > 1
-        output
-      else
-        if klass = to_class(names)
-          select_tag(names, options_from_collection_for_select(klass.select('id, name'), "id", "name"), options)
-        else
-          raise InvalidAttributeError
-        end
-      end
-    end
 
-    def region_select(object, methods, options = {}, html_options = {})
-      options.symbolize_keys!
-      html_options.symbolize_keys!
-      append_region_class(html_options)
-
-      if Array === methods
-        output = ActiveSupport::SafeBuffer.new
-        methods.each_with_index do |method, index|
-          if klass = to_class(method)
-            choices = index == 0 ? klass.select('id, name').collect {|p| [ p.name, p.id ] } : []
-            next_method = methods.at(index + 1)
-            set_html_options(object, method, html_options, next_method)
-
-            output << content_tag(:div, select(object, method.to_s, choices, options.merge(prompt: options.delete("#{method}_prompt".to_sym)), html_options = html_options), class: "input region #{method.to_s}")
-          else
-            raise InvalidAttributeError
+        def get_choices(object, klass, region, ar_object)
+          return [] if object.blank?
+          return [] if !ar_object.is_a?(ActiveRecord::Base)
+          if %w(city city_id).include?(region.to_s) && ar_object.province_id.present?
+            klass.where(province_id: ar_object.province_id).pluck(:name, :id)
+          elsif %w(district district_id).include?(region.to_s) && ar_object.city_id.present?
+            klass.where(city_id: ar_object.city_id).pluck(:name, :id)
           end
         end
-        output << js_for_region_ajax if methods.size > 1
-        output
-      else
-        if klass = to_class(methods)
-          content_tag(:div, select(object, methods, klass.select('id, name').collect {|p| [ p.name, p.id ] }, options = options, html_options = html_options), class: "input region #{methods.to_s}")
-        else
-          raise InvalidAttributeError
-        end
-      end
     end
-  end
 
-  module FormBuilder
-    def region_select(methods, options = {}, html_options = {})
-      @template.region_select(@object_name, methods, objectify_options(options), @default_options.merge(html_options))
+    module FormBuilder
+      def region_select(methods, options = {}, html_options = {})
+        @template.region_select(@object_name, methods, objectify_options(options), @default_options.merge(html_options))
+      end
     end
   end
 end

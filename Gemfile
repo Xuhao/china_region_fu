@@ -1,5 +1,4 @@
-# source 'https://rubygems.org'
-source 'http://ruby.taobao.org'
+source 'https://rubygems.org'
 
-# Specify your gem's dependencies in lean.gemspec
+# Specify your gem's dependencies in china_region_fu.gemspec
 gemspec

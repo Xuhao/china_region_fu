@@ -1,16 +1,15 @@
 require 'httparty'
 
-namespace :region do
-
-  desc 'Install china region fu'
-  task :install => ['china_region_fu_engine:install:migrations', 'db:migrate', 'region:download', 'region:import']
+namespace :china_region_fu do
+  desc 'Setup china region fu'
+  task setup: ['china_region_fu:install:migrations', 'db:migrate', 'china_region_fu:download', 'china_region_fu:import']
 
   desc 'Download regions.yml from https://raw.github.com/Xuhao/china_region_data/master/regions.yml'
   task :download do
     begin
       remote_url = 'https://raw.github.com/Xuhao/china_region_data/master/regions.yml'
       puts 'Downloading ...'
-      File.open(Rails.root.join('config', 'regions.yml'), 'wb') { |f| f.write(HTTParty.get(remote_url).body)}
+      File.open(Rails.root.join('config', 'regions.yml'), 'wb') { |f| f.write(HTTParty.get(remote_url).body) }
       puts "Done! File located at: \e[32mconfig/regions.yml\e[0m"
     rescue
       puts "\e[31mWarnning!!!\e[0m"
@@ -21,14 +20,14 @@ namespace :region do
     end
   end
 
-  desc "Import region data to database from config/regions.yml"
-  task :import => :environment do
+  desc 'Import region data to database from config/regions.yml'
+  task import: :environment do
     puts 'Importing ...'
     file_path = Rails.root.join('config', 'regions.yml')
     regions = File.open(file_path) { |file| YAML.load(file) }
     cleanup_regins
     load_to_db(regions)
-    puts "Regions import done!"
+    puts 'Regions import done!'
   end
 
   def cleanup_regins

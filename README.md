@@ -7,6 +7,12 @@
 
 ChinaRegionFu 是一个为Rails应用提供的中国行政区域信息的rubygem。使用ChinaRegionFu后，你将拥有全面且准确的中国区域数据，而且你还可以使用其提供的表单helper，轻松将具有联动效果的区域选择器放入你的表单中。
 
+## 运行环境
+
+  * CRuby 2.2 以上
+  * Rails 4.0 以上
+  * jQuery 1.8 以上, 若不需要联动效果可忽略
+
 ## 安装
 
 将 'gem china_region_fu' 放入项目的 Gemfile中:
@@ -21,7 +27,7 @@ bundle安装完成后，你需要依次运行以下命令:
 
   1. 复制数据迁移文件到项目中:
 
-      <pre>rake china_region_fu_engine:install:migrations</pre>
+      <pre>rake china_region_fu:install:migrations</pre>
 
   2. 运行 db:migrate 来创建数据库表:
 
@@ -29,15 +35,15 @@ bundle安装完成后，你需要依次运行以下命令:
 
   3. 从[china_region_data](https://raw.github.com/Xuhao/china_region_data)下载最新的<b>[regions.yml](https://raw.github.com/Xuhao/china_region_data/master/regions.yml)</b>:
 
-      <pre>rake region:download</pre>
+      <pre>rake china_region_fu:download</pre>
 
   4. 将区域信息导入到数据库:
 
-      <pre>rake region:import</pre>
+      <pre>rake china_region_fu:import</pre>
 
 以上每条命令运行完成后，你可以根据需要对生成的文件做一些修改，然后再运行下一条。如果你不需要做自定义修改，也可以通过下面这条命令实现和上面4个命令同样的动作:
 
-    rake region:install
+    rake china_region_fu:setup
 
 区域数据来自[ChinaRegionData](https://github.com/Xuhao/china_region_data), 你可以通过查看这个git库来了解都有哪些区域数据。
 
@@ -123,7 +129,6 @@ d.province.name          # => "新疆维吾尔自治区"
   <%= f.input :province_id, as: :region, collection: Province.select('id, name'), sub_region: :city_id %>
   <%= f.input :city_id, as: :region, sub_region: :district_id %>
   <%= f.input :district_id, as: :region %>
-  <%= js_for_region_ajax %>
 <% end %>
 ```
 
@@ -132,18 +137,19 @@ d.province.name          # => "新疆维吾尔自治区"
 ```erb
 <%= semantic_form_for(@address) do |f| %>
   <%= f.input :province_id, as: :region, collection: Province.select('id, name'), sub_region: :city_id) %>
-  <%= f.input :city_id), as: :region, sub_region: :district_id %>
+  <%= f.input :city_id, as: :region, sub_region: :district_id %>
   <%= f.input :district_id, as: :region %>
-  <%= js_for_region_ajax %>
 <% end %>
 ```
 
 ##### 通过Ajax实现联动效果
 
-当选中某个省份时，我们希望城市下拉列表自动显示这个省下属的城市；当选择某个城市时，我们希望区域列表显示该城市下属区域。如果你使用`:region_select_tag`和`:region_select`这个两个helper构造表单，你不需要左任何额外工作就能获得联动效果。如果你用simple_form, formtastic或使用rails内置的下拉列表helper例如`:select_tag` 和 `:select`, 你需要使用下面这个helper来实现联动效果:
+当选中某个省份时，我们希望城市下拉列表自动显示这个省下属的城市；当选择某个城市时，我们希望区域列表显示该城市下属区域。你需要在你的页面中添加以下helper来实现联动效果:
 
 ```erb
-<%= js_for_region_ajax %>
+<%= china_region_fu_js %>
+# or
+<%= content_for :china_region_fu_js %>
 ```
 
 将会渲染:
@@ -151,19 +157,33 @@ d.province.name          # => "新疆维吾尔自治区"
 ```html
 <script type="text/javascript">
   //<![CDATA[
+    window.chinaRegionFu = window.chinaRegionFu || {};
     $(function(){
-      $('body').off('change', '.region_select').on('change', '.region_select', function(event) {
-        var self, $targetDom;
-        self = $(event.currentTarget);
-        $targetDom = $('#' + self.data('region-target'));
-        if ($targetDom.size() > 0) {
-          $.getJSON('/china_region_fu/fetch_options', {klass: self.data('region-target-kalss'), parent_klass: self.data('region-klass'), parent_id: self.val()}, function(data) {
-            var options = [];
-            $('option[value!=""]', $targetDom).remove();
-            $.each(data, function(index, value) {
-              options.push("<option value='" + value.id + "'>" + value.name + "</option>");
-            });
-            $targetDom.append(options.join(''));
+      $('body').off('change', '.china-region-select').on('change', '.china-region-select', function(event) {
+        var $self, $targetDom;
+        $self = $(event.currentTarget);
+        $subRegionDom = $('[data-region-name="' + $self.data('sub-region') + '"]');
+        if ($subRegionDom.size() > 0) {
+          $.getJSON('/china_region_fu/fetch_options', {
+              columns: window.chinaRegionFu.fetchColumns || 'id,name',
+              sub_name: $self.data('sub-region'),
+              parent_name: $self.data('region-name'),
+              parent_id: $self.val()
+            }, function(json) {
+              if (window.chinaRegionFu.ajaxDone) {
+                window.chinaRegionFu.ajaxDone(json);
+              } else {
+                var options = [];
+                $self.parent().nextAll().find('.china-region-select > option[value!=""]').remove()
+                $.each(json.data, function(_, value) {
+                  options.push("<option value='" + value.id + "'>" + value.name + "</option>");
+                });
+                $subRegionDom.append(options.join(''));
+              }
+          }).fail(function(xhr, textStatus, error) {
+            window.chinaRegionFu.ajaxFail && window.chinaRegionFu.ajaxFail(jqxhr, textStatus, error);
+          }).always(function(event, xhr, settings) {
+            window.chinaRegionFu.ajaxAlways && window.chinaRegionFu.ajaxAlways(event, xhr, settings);
           });
         }
       });
