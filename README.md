@@ -7,6 +7,8 @@
 
 ChinaRegionFu 是一个提供中国行政区域信息的rails engine(只适用rails)。使用ChinaRegionFu后，你将拥有全面且准确的中国区域数据，而且你还可以使用其提供的表单helper，轻松将具有联动效果的区域选择器放入你的表单中。
 
+![Screenshot](https://cloud.githubusercontent.com/assets/324973/19191241/2c5726a8-8cd4-11e6-960d-6edd1fa69427.gif "Screenshot")
+
 ## 运行环境
 
   * CRuby 2.2 及以上
