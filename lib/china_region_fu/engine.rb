@@ -1,3 +1,4 @@
+require 'rails'
 require 'china_region_fu/helpers/helpers'
 
 module ChinaRegionFu

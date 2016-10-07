@@ -1,10 +1,11 @@
 require 'china_region_fu/errors'
-require 'china_region_fu/helpers/utilis'
+require 'china_region_fu/helpers/utils'
+require 'active_support/core_ext/object/blank'
 
 module ChinaRegionFu
   module Helpers
     module FormHelper
-      include Utilis
+      include Utils
 
       def region_select_tag(regions, options = {})
         render_region_select_tags(nil, regions, ActiveSupport::SafeBuffer.new, options)
@@ -17,7 +18,7 @@ module ChinaRegionFu
       private
 
         def render_region_select_tags(object, regions, buffer = ActiveSupport::SafeBuffer.new, options = {}, html_options = {})
-          regions = regions.to_a
+          regions = (regions.is_a?(Symbol) || regions.is_a?(String)) ? [regions] : regions.to_a
           regions.each_with_index do |region, index|
             if klass = region.to_s.sub(/_id\Z/, '').classify.safe_constantize
               buffer << content_tag(:div, make_select(object, klass, region, regions.at(index + 1), index, options, html_options), class: "input region #{region}")
@@ -45,6 +46,8 @@ module ChinaRegionFu
             klass.where(province_id: ar_object.province_id).pluck(:name, :id)
           elsif %w(district district_id).include?(region.to_s) && ar_object.city_id.present?
             klass.where(city_id: ar_object.city_id).pluck(:name, :id)
+          else
+            []
           end
         end
     end

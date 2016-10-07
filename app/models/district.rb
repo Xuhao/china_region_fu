@@ -3,6 +3,6 @@ class District < ActiveRecord::Base
   has_one :province, through: :city
 
   def short_name
-    @short_name ||= name.sub(/区|县|市|自治县$/,'')
+    @short_name ||= name.sub(/区|县|市$/,'')
   end
 end

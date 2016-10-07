@@ -5,7 +5,7 @@
 [![Gem Version](https://badge.fury.io/rb/china_region_fu.png)](http://badge.fury.io/rb/china_region_fu)
 [![Build Status](https://travis-ci.org/Xuhao/china_region_fu.png?branch=master)](https://travis-ci.org/Xuhao/china_region_fu)
 
-ChinaRegionFu provide the region data of china.You will got complete China region data after use this gem.
+ChinaRegionFu is a rails engine(means only suit for rails) that provide region data of china and handy view helpers. You will got complete China region data after use this gem.
 
 ## Requirements
 
@@ -61,7 +61,7 @@ If you want to customize the region modules you can run the generator:
 
 ## Usage
 
-#### Model
+### Model
 
 ```ruby
 a = Province.last
@@ -88,9 +88,9 @@ d.city.name              # => "阿勒泰地区"
 d.province.name          # => "新疆维吾尔自治区"
 ```
 
-#### View
+### View
 
-##### Form helpers
+#### Form helpers
 
 ```erb
 <%= form_for(@address) do |f| %>
@@ -102,7 +102,6 @@ d.province.name          # => "新疆维吾尔自治区"
     <%= f.region_select [:province_id, :city_id, :district_id], province_prompt: 'Do', city_prompt: 'it', district_prompt: 'like this' %>
     <%= f.region_select [:province_id, :city_id], include_blank: true %>
     <%= f.region_select [:city_id, :district_id] %>
-    <%= f.region_select [:province_id, :district_id] %>
 
     # FormHelper
     <%= region_select :address, :province_id %>
@@ -117,31 +116,31 @@ d.province.name          # => "新疆维吾尔自治区"
 <% end %>
 ```
 
-##### SimpleForm
+#### SimpleForm
 
 ```erb
 <%= simple_form_for(@address) do |f| %>
   <%= f.input :province_id, as: :region, collection: Province.select('id, name'), sub_region: :city_id %>
-  <%= f.input :city_id, as: :region, sub_region: :district_id %>
-  <%= f.input :district_id, as: :region %>
+  <%= f.input :city_id, as: :region, collection: City.where(province_id: f.object.province_id).select('id, name'), sub_region: :district_id %>
+  <%= f.input :district_id, as: :region, collection: District.where(city_id: f.object.city_id).select('id, name') %>
   <%= china_region_fu_js %>
 <% end %>
 ```
 
-##### Formtastic
+#### Formtastic
 
 ```erb
 <%= semantic_form_for(@address) do |f| %>
   <%= f.input :province_id, as: :region, collection: Province.select('id, name'), sub_region: :city_id) %>
-  <%= f.input :city_id, as: :region, sub_region: :district_id %>
-  <%= f.input :district_id, as: :region %>
+  <%= f.input :city_id, as: :region, collection: City.where(province_id: f.object.province_id).select('id, name'), sub_region: :district_id %>
+  <%= f.input :district_id, as: :region, collection: District.where(city_id: f.object.city_id).select('id, name') %>
   <%= china_region_fu_js %>
 <% end %>
 ```
 
-##### Fetch sub regions by Ajax
+#### Reactive effect by Ajax
 
-Once select one province, we want fetch cities of the selected province and fill the city select box automatically. to implement this, what you need to do is add below helper in your form:
+Once select one province, we want fetch cities of the selected province and fill the city select box automatically. to implement this, you need add below helper in your form:
 
 ```erb
 <%= china_region_fu_js %>
@@ -178,7 +177,7 @@ it will render:
                 $subRegionDom.append(options.join(''));
               }
           }).fail(function(xhr, textStatus, error) {
-            window.chinaRegionFu.ajaxFail && window.chinaRegionFu.ajaxFail(jqxhr, textStatus, error);
+            window.chinaRegionFu.ajaxFail && window.chinaRegionFu.ajaxFail(xhr, textStatus, error);
           }).always(function(event, xhr, settings) {
             window.chinaRegionFu.ajaxAlways && window.chinaRegionFu.ajaxAlways(event, xhr, settings);
           });
@@ -188,13 +187,20 @@ it will render:
   //]]>
 </script>
 ```
+hooks:
+
+  * `window.chinaRegionFu.fetchColumns`: Set columns of each returned region, default: `id,name`
+  * `window.chinaRegionFu.ajaxDone(json)`: Customize ajax `success` event，default: reload sub region options
+  * `window.chinaRegionFu.ajaxFail(xhr, textStatus, error)`: Customize ajax `fail` event
+  * `window.chinaRegionFu.ajaxAlways(event, xhr, settings)`: Customize ajax `always` event
 
 ## Online example
-[医院之家](http://www.yihub.com/ "医院").
+
+[yihub.com](http://www.yihub.com/ "医院").
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/xuhao/sample. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/xuhao/china_region_fu. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
 
 ## License
 

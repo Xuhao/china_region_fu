@@ -1,7 +1,7 @@
-require 'china_region_fu/helpers/utilis'
+require 'china_region_fu/helpers/utils'
 
 class RegionInput < Formtastic::Inputs::SelectInput
-  include ChinaRegionFu::Utilis
+  include ChinaRegionFu::Utils
 
   def collection_from_options
     return [] unless options.key?(:collection)

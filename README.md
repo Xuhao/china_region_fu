@@ -5,13 +5,13 @@
 [![Gem Version](https://badge.fury.io/rb/china_region_fu.png)](http://badge.fury.io/rb/china_region_fu)
 [![Build Status](https://travis-ci.org/Xuhao/china_region_fu.png?branch=master)](https://travis-ci.org/Xuhao/china_region_fu)
 
-ChinaRegionFu 是一个为Rails应用提供的中国行政区域信息的rubygem。使用ChinaRegionFu后，你将拥有全面且准确的中国区域数据，而且你还可以使用其提供的表单helper，轻松将具有联动效果的区域选择器放入你的表单中。
+ChinaRegionFu 是一个提供中国行政区域信息的rails engine(只适用rails)。使用ChinaRegionFu后，你将拥有全面且准确的中国区域数据，而且你还可以使用其提供的表单helper，轻松将具有联动效果的区域选择器放入你的表单中。
 
 ## 运行环境
 
-  * CRuby 2.2 以上
-  * Rails 4.0 以上
-  * jQuery 1.8 以上, 若不需要联动效果可忽略
+  * CRuby 2.2 及以上
+  * Rails 4.0 及以上
+  * jQuery 1.8 及以上, 若不需要联动效果可忽略
 
 ## 安装
 
@@ -45,12 +45,12 @@ bundle安装完成后，你需要依次运行以下命令:
 
     rake china_region_fu:setup
 
-区域数据来自[ChinaRegionData](https://github.com/Xuhao/china_region_data), 你可以通过查看这个git库来了解都有哪些区域数据。
+区域数据来自[china_region_data](https://github.com/Xuhao/china_region_data), 你可以通过查看这个git库来了解都有哪些区域数据。
 
 ChinaRegionFu通过`ActiveRecord`将各种区域映射成类:
- * Province: 省、自治区、直辖市、特别行政区
- * City: 地区、盟、自治州、地级市
- * District: 县、自治县、旗、自治旗、县级市、市辖区、林区、特区
+ * `Province`: 省、自治区、直辖市、特别行政区
+ * `City`: 地区、盟、自治州、地级市
+ * `District`: 县、自治县、旗、自治旗、县级市、市辖区、林区、特区
 
 如果你想自定义这些类，可以通过以下命令将其复制到你的项目中:
 
@@ -66,7 +66,7 @@ ChinaRegionFu通过`ActiveRecord`将各种区域映射成类:
 
 ## 使用说明
 
-#### Model
+### Model
 
 ```ruby
 a = Province.last
@@ -93,9 +93,9 @@ d.city.name              # => "阿勒泰地区"
 d.province.name          # => "新疆维吾尔自治区"
 ```
 
-#### View
+### View
 
-##### Form helpers
+#### Form helpers
 
 ```erb
 <%= form_for(@address) do |f| %>
@@ -107,7 +107,6 @@ d.province.name          # => "新疆维吾尔自治区"
     <%= f.region_select [:province_id, :city_id, :district_id], province_prompt: 'Do', city_prompt: 'it', district_prompt: 'like this' %>
     <%= f.region_select [:province_id, :city_id], include_blank: true %>
     <%= f.region_select [:city_id, :district_id] %>
-    <%= f.region_select [:province_id, :district_id] %>
 
     # FormHelper
     <%= region_select :address, :province_id %>
@@ -122,27 +121,29 @@ d.province.name          # => "新疆维吾尔自治区"
 <% end %>
 ```
 
-##### SimpleForm
+#### SimpleForm
 
 ```erb
 <%= simple_form_for(@address) do |f| %>
   <%= f.input :province_id, as: :region, collection: Province.select('id, name'), sub_region: :city_id %>
-  <%= f.input :city_id, as: :region, sub_region: :district_id %>
-  <%= f.input :district_id, as: :region %>
+  <%= f.input :city_id, as: :region, collection: City.where(province_id: f.object.province_id).select('id, name'), sub_region: :district_id %>
+  <%= f.input :district_id, as: :region, collection: District.where(city_id: f.object.city_id).select('id, name') %>
+  <%= china_region_fu_js %>
 <% end %>
 ```
 
-##### Formtastic
+#### Formtastic
 
 ```erb
 <%= semantic_form_for(@address) do |f| %>
   <%= f.input :province_id, as: :region, collection: Province.select('id, name'), sub_region: :city_id) %>
-  <%= f.input :city_id, as: :region, sub_region: :district_id %>
-  <%= f.input :district_id, as: :region %>
+  <%= f.input :city_id, as: :region, collection: City.where(province_id: f.object.province_id).select('id, name'), sub_region: :district_id %>
+  <%= f.input :district_id, as: :region, collection: District.where(city_id: f.object.city_id).select('id, name') %>
+  <%= china_region_fu_js %>
 <% end %>
 ```
 
-##### 通过Ajax实现联动效果
+#### 通过AJAX实现联动效果
 
 当选中某个省份时，我们希望城市下拉列表自动显示这个省下属的城市；当选择某个城市时，我们希望区域列表显示该城市下属区域。你需要在你的页面中添加以下helper来实现联动效果:
 
@@ -181,7 +182,7 @@ d.province.name          # => "新疆维吾尔自治区"
                 $subRegionDom.append(options.join(''));
               }
           }).fail(function(xhr, textStatus, error) {
-            window.chinaRegionFu.ajaxFail && window.chinaRegionFu.ajaxFail(jqxhr, textStatus, error);
+            window.chinaRegionFu.ajaxFail && window.chinaRegionFu.ajaxFail(xhr, textStatus, error);
           }).always(function(event, xhr, settings) {
             window.chinaRegionFu.ajaxAlways && window.chinaRegionFu.ajaxAlways(event, xhr, settings);
           });
@@ -191,13 +192,20 @@ d.province.name          # => "新疆维吾尔自治区"
   //]]>
 </script>
 ```
+自定义:
+
+  * `window.chinaRegionFu.fetchColumns`: 设定返回栏位数据，默认: `id,name`
+  * `window.chinaRegionFu.ajaxDone(json)`: 自定义ajax `success`事件，默认：重新填充下级选项
+  * `window.chinaRegionFu.ajaxFail(xhr, textStatus, error)`: 自定义ajax `fail`事件
+  * `window.chinaRegionFu.ajaxAlways(event, xhr, settings)`: 自定义ajax `always`事件
 
 ## 在线的例子
+
 [医院之家](http://www.yihub.com/ "医院").
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/xuhao/sample. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/xuhao/china_region_fu. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](contributor-covenant.org) code of conduct.
 
 ## License
 

@@ -1,9 +1,9 @@
-require 'china_region_fu/helpers/utilis'
+require 'china_region_fu/helpers/utils'
 
 module ChinaRegionFu
   module SimpleForm
     class RegionInput < ::SimpleForm::Inputs::CollectionSelectInput
-      include ChinaRegionFu::Utilis
+      include ChinaRegionFu::Utils
       def input_html_options
         append_html_options(attribute_name, sub_region, super)
       end
