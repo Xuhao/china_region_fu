@@ -2,10 +2,14 @@
 
 # ChinaRegionFu
 
-[![Gem Version](https://badge.fury.io/rb/china_region_fu.png)](http://badge.fury.io/rb/china_region_fu)
-[![Build Status](https://travis-ci.org/Xuhao/china_region_fu.png?branch=master)](https://travis-ci.org/Xuhao/china_region_fu)
+[![Build Status](https://travis-ci.org/Xuhao/china_region_fu.svg?branch=master)](https://travis-ci.org/Xuhao/china_region_fu)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/85643743367e47d6853b94431f4f503f)](https://www.codacy.com/app/xuhao/china_region_fu?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Xuhao/china_region_fu&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/85643743367e47d6853b94431f4f503f)](https://www.codacy.com/app/xuhao/china_region_fu?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Xuhao/china_region_fu&amp;utm_campaign=Badge_Coverage)
+[![Gem Version](https://badge.fury.io/rb/china_region_fu.svg)](https://badge.fury.io/rb/china_region_fu)
 
 ChinaRegionFu is a rails engine(means only suit for rails) that provide region data of china and handy view helpers. You will got complete China region data after use this gem.
+
+![Screenshot](https://cloud.githubusercontent.com/assets/324973/19191241/2c5726a8-8cd4-11e6-960d-6edd1fa69427.gif "Screenshot")
 
 ## Requirements
 

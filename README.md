@@ -2,8 +2,10 @@
 
 # ChinaRegionFu
 
-[![Gem Version](https://badge.fury.io/rb/china_region_fu.png)](http://badge.fury.io/rb/china_region_fu)
-[![Build Status](https://travis-ci.org/Xuhao/china_region_fu.png?branch=master)](https://travis-ci.org/Xuhao/china_region_fu)
+[![Build Status](https://travis-ci.org/Xuhao/china_region_fu.svg?branch=master)](https://travis-ci.org/Xuhao/china_region_fu)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/85643743367e47d6853b94431f4f503f)](https://www.codacy.com/app/xuhao/china_region_fu?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Xuhao/china_region_fu&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/85643743367e47d6853b94431f4f503f)](https://www.codacy.com/app/xuhao/china_region_fu?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Xuhao/china_region_fu&amp;utm_campaign=Badge_Coverage)
+[![Gem Version](https://badge.fury.io/rb/china_region_fu.svg)](https://badge.fury.io/rb/china_region_fu)
 
 ChinaRegionFu 是一个提供中国行政区域信息的rails engine(只适用rails)。使用ChinaRegionFu后，你将拥有全面且准确的中国区域数据，而且你还可以使用其提供的表单helper，轻松将具有联动效果的区域选择器放入你的表单中。
 

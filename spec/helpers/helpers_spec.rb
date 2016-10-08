@@ -1,7 +1,13 @@
 require 'action_view'
 require 'china_region_fu/helpers/helpers'
 
-RSpec.shared_examples 'render region select correctly' do |single_proc, multi_proc|
+RSpec.shared_examples 'render region select correctly' do |invalid_proc, single_proc, multi_proc|
+  context 'when pass invalid regions' do
+    it 'raise error' do
+      expect { invalid_proc.call }.to raise_error(ChinaRegionFu::InvalidFieldError)
+    end
+  end
+
   context 'when pass one region' do
     it 'return one select tag wrapped by a div' do
       output = single_proc.call
@@ -34,11 +40,21 @@ RSpec.describe ChinaRegionFu::Helpers do
     view.extend(ChinaRegionFu::Helpers::FormHelper)
 
     describe '#region_select_tag' do
-      include_examples 'render region select correctly', ->() { view.region_select_tag(:province_id) }, ->() { view.region_select_tag([:province_id, :city_id, :district_id]) }
+      include_examples(
+        'render region select correctly',
+        ->() { view.region_select_tag(:invalid_region) },
+        ->() { view.region_select_tag(:province_id) },
+        ->() { view.region_select_tag([:province_id, :city_id, :district_id]) }
+      )
     end
 
     describe '#region_select' do
-      include_examples 'render region select correctly', ->() { view.region_select(:address, :province_id) }, ->() { view.region_select(:address, [:province_id, :city_id, :district_id]) }
+      include_examples(
+        'render region select correctly',
+        ->() { view.region_select(:address, :invalid_region) },
+        ->() { view.region_select(:address, :province_id) },
+        ->() { view.region_select(:address, [:province_id, :city_id, :district_id]) }
+      )
 
       it 'act as a objet field' do
         output = view.region_select(:address, [:province_id, :city_id, :district_id])
@@ -60,7 +76,12 @@ RSpec.describe ChinaRegionFu::Helpers do
       view = ActionView::Helpers::FormBuilder.new('address', Address.new(province_id: 16, city_id: 166, district_id: 1513), template, {})
       view.extend(ChinaRegionFu::Helpers::FormBuilder)
 
-      include_examples 'render region select correctly', ->() { view.region_select(:province_id) }, ->() { view.region_select([:province_id, :city_id, :district_id]) }
+      include_examples(
+        'render region select correctly',
+        ->() { view.region_select(:invalid_region) },
+        ->() { view.region_select(:province_id) },
+        ->() { view.region_select([:province_id, :city_id, :district_id]) }
+      )
 
       it 'set correct value for each region field' do
         output = view.region_select([:province_id, :city_id, :district_id])
@@ -74,7 +95,12 @@ RSpec.describe ChinaRegionFu::Helpers do
       view = ActionView::Helpers::FormBuilder.new('address', Address.new, template, {})
       view.extend(ChinaRegionFu::Helpers::FormBuilder)
 
-      include_examples 'render region select correctly', ->() { view.region_select(:province_id) }, ->() { view.region_select([:province_id, :city_id, :district_id]) }
+      include_examples(
+        'render region select correctly',
+        ->() { view.region_select(:invalid_region) },
+        ->() { view.region_select(:province_id) },
+        ->() { view.region_select([:province_id, :city_id, :district_id]) }
+      )
 
       it 'fill options for first region field' do
         output = view.region_select([:province_id, :city_id, :district_id])
