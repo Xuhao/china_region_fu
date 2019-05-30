@@ -149,7 +149,7 @@ it will render:
         var self, $targetDom;
         self = $(event.currentTarget);
         $targetDom = $('#' + self.data('region-target'));
-        if ($targetDom.size() > 0) {
+        if ($targetDom.length > 0) {
           $.getJSON('/china_region_fu/fetch_options', {klass: self.data('region-target-kalss'), parent_klass: self.data('region-klass'), parent_id: self.val()}, function(data) {
             var options = [];
             $('option[value!=""]', $targetDom).remove();
