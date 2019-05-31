@@ -165,15 +165,17 @@ d.province.name          # => "新疆维吾尔自治区"
     window.chinaRegionFu = window.chinaRegionFu || {};
     $(function(){
       $('body').off('change', '.china-region-select').on('change', '.china-region-select', function(event) {
-        var $self, $targetDom;
-        $self = $(event.currentTarget);
-        $subRegionDom = $('[data-region-name="' + $self.data('sub-region') + '"]');
-        if ($subRegionDom.size() > 0) {
+        var $self = $(event.currentTarget),
+          $subRegionDom = $('[data-region-name="' + $self.data('sub-region') + '"]'),
+          subName = $self.data('sub-region'),
+          parentName = $self.data('region-name'),
+          parentId = $self.val();
+        if ($subRegionDom.length > 0 && subName && parentName && parentId) {
           $.getJSON('/china_region_fu/fetch_options', {
               columns: window.chinaRegionFu.fetchColumns || 'id,name',
-              sub_name: $self.data('sub-region'),
-              parent_name: $self.data('region-name'),
-              parent_id: $self.val()
+              sub_name: subName,
+              parent_name: parentName,
+              parent_id: parentId
             }, function(json) {
               if (window.chinaRegionFu.ajaxDone) {
                 window.chinaRegionFu.ajaxDone(json);

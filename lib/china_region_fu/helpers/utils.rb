@@ -15,7 +15,7 @@ module ChinaRegionFu
                   subName = $self.data('sub-region'),
                   parentName = $self.data('region-name'),
                   parentId = $self.val();
-                if ($subRegionDom.size() > 0 && subName && parentName && parentId) {
+                if ($subRegionDom.length > 0 && subName && parentName && parentId) {
                   $.getJSON('/china_region_fu/fetch_options', {
                       columns: window.chinaRegionFu.fetchColumns || 'id,name',
                       sub_name: subName,
